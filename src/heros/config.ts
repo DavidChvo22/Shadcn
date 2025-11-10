@@ -35,12 +35,20 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Custom',
+          value: 'customHero',
+        },
       ],
       required: true,
     },
     {
-      name: 'richText',
+      name: 'title',
       type: 'richText',
+      label: 'Title',
+      admin: {
+        condition: (_, { type } = {}) => type === 'customHero',
+      },
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
           return [
@@ -51,8 +59,33 @@ export const hero: Field = {
           ]
         },
       }),
-      label: false,
     },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Description',
+      admin: {
+        condition: (_, { type } = {}) => type === 'customHero',
+      },
+      required: false,
+    },
+    {
+      name: 'buttonText',
+      type: 'text',
+      label: 'Button Text',
+      admin: {
+        condition: (_, { type } = {}) => type === 'customHero',
+      },
+    },
+    {
+      name: 'buttonLink',
+      type: 'text',
+      label: 'Button Link',
+      admin: {
+        condition: (_, { type } = {}) => type === 'customHero',
+      },
+    },
+
     linkGroup({
       overrides: {
         maxRows: 2,

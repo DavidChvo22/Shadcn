@@ -157,8 +157,8 @@ export interface Page {
   id: string;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
-    richText?: {
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero';
+    title?: {
       root: {
         type: string;
         children: {
@@ -173,6 +173,9 @@ export interface Page {
       };
       [k: string]: unknown;
     } | null;
+    description?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
     links?:
       | {
           link: {
@@ -199,7 +202,21 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ExampleBlock
+    | HeaderBlock
+    | FlowBlock
+    | FaqBlock
+    | ContactBlock
+    | OptionsBlock
+    | CTABlock
+    | ReferenceBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -780,6 +797,125 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExampleBlock".
+ */
+export interface ExampleBlock {
+  /**
+   * Enter some example text to display in this block
+   */
+  exampleText: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'exampleBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderBlock".
+ */
+export interface HeaderBlock {
+  title: string;
+  description?: string | null;
+  buttonText: string;
+  buttonLink: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'headerBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowBlock".
+ */
+export interface FlowBlock {
+  title?: string | null;
+  steps: {
+    title: string;
+    subtitle: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'postupBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  faqs?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  title: string;
+  description: string;
+  phone: string;
+  email: string;
+  web: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OptionsBlock".
+ */
+export interface OptionsBlock {
+  title?: string | null;
+  description?: string | null;
+  checkedItems: {
+    item?: string | null;
+    id?: string | null;
+  }[];
+  buttonText: string;
+  buttonLink: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'optionsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTABlock".
+ */
+export interface CTABlock {
+  title?: string | null;
+  description?: string | null;
+  buttonText?: string | null;
+  buttonLink: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'ctaBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReferenceBlock".
+ */
+export interface ReferenceBlock {
+  title?: string | null;
+  testimonials: {
+    name: string;
+    role: string;
+    avatar: '1' | '2';
+    content: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'referenceBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1060,7 +1196,10 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        richText?: T;
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
         links?:
           | T
           | {
@@ -1086,6 +1225,14 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        exampleBlock?: T | ExampleBlockSelect<T>;
+        headerBlock?: T | HeaderBlockSelect<T>;
+        postupBlock?: T | FlowBlockSelect<T>;
+        faqBlock?: T | FaqBlockSelect<T>;
+        contactBlock?: T | ContactBlockSelect<T>;
+        optionsBlock?: T | OptionsBlockSelect<T>;
+        ctaBlock?: T | CTABlockSelect<T>;
+        referenceBlock?: T | ReferenceBlockSelect<T>;
       };
   meta?:
     | T
@@ -1182,6 +1329,120 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExampleBlock_select".
+ */
+export interface ExampleBlockSelect<T extends boolean = true> {
+  exampleText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeaderBlock_select".
+ */
+export interface HeaderBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FlowBlock_select".
+ */
+export interface FlowBlockSelect<T extends boolean = true> {
+  title?: T;
+  steps?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock_select".
+ */
+export interface FaqBlockSelect<T extends boolean = true> {
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  phone?: T;
+  email?: T;
+  web?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OptionsBlock_select".
+ */
+export interface OptionsBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  checkedItems?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  buttonText?: T;
+  buttonLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CTABlock_select".
+ */
+export interface CTABlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ReferenceBlock_select".
+ */
+export interface ReferenceBlockSelect<T extends boolean = true> {
+  title?: T;
+  testimonials?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        avatar?: T;
+        content?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
