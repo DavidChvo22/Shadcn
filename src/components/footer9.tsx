@@ -52,7 +52,7 @@ const sections = [
 
 const Footer9 = () => {
   return (
-    <section className="bg-gray-100 py-32">
+    <section className="bg-accent py-32">
       <div className="container px-16">
         <footer>
           <div className="mb-14 flex flex-col justify-between gap-11 md:items-start xl:flex-row xl:items-center xl:gap-6">
@@ -63,7 +63,7 @@ const Footer9 = () => {
               </p>
               <div className="flex items-center gap-3">
                 <Button variant="black-cyan">Start for free</Button>
-                <Button variant="outline" className="text-black bg-[#e2e8f0] rounded-xl">
+                <Button variant="outline" className="bg-transparent rounded-xl">
                   Compare plans
                 </Button>
               </div>
@@ -79,19 +79,19 @@ const Footer9 = () => {
               <ul className="text-muted-foreground flex flex-col justify-center space-y-3">
                 <li className="hover:text-primary flex items-center gap-2 font-medium">
                   <CircleCheck className="text-primary h-5 w-5" />
-                  <p className="text-gray-400">1 Team Member</p>
+                  <p className="text-text-muted-light">1 Team Member</p>
                 </li>
                 <li className="hover:text-primary flex items-center gap-2 font-medium">
                   <CircleCheck className="text-primary h-5 w-5" />
-                  <p className="text-gray-400">Unlimited Downloads</p>
+                  <p className="text-text-muted-light">Unlimited Downloads</p>
                 </li>
                 <li className="hover:text-primary flex items-center gap-2 font-medium">
                   <CircleCheck className="text-primary h-5 w-5" />
-                  <p className="text-gray-400">100GB Space</p>
+                  <p className="text-text-muted-light">100GB Space</p>
                 </li>
                 <li className="hover:text-primary flex items-center gap-2 font-medium">
                   <CircleCheck className="text-primary h-5 w-5" />
-                  <p className="text-gray-400">Basic Support</p>
+                  <p className="text-text-muted-light">Basic Support</p>
                 </li>
               </ul>
             </div>
@@ -122,12 +122,14 @@ const Footer9 = () => {
                 <a href="#">Imprint</a>
               </li>
               <li>
-                <p className="text-gray-400">© 2024 Shadcnblocks.com. All rights reserved.</p>
+                <p className="text-text-muted-light">
+                  © 2024 Shadcnblocks.com. All rights reserved.
+                </p>
               </li>
             </ul>
             <ul className="flex items-center justify-center gap-4 lg:justify-start">
               <li>
-                <p className="text-black">Follow us:</p>
+                <p className="text-foreground">Follow us:</p>
               </li>
               <li>
                 <Button className="gap-2 rounded-full">

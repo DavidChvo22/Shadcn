@@ -21,7 +21,7 @@ const ContactBlock = ({
   web = { label: 'shadcnblocks.com', url: 'https://shadcnblocks.com' },
 }: ContactBlockProps) => {
   return (
-    <section className="py-32 bg-[#e2e8f0]">
+    <section className="py-32 bg-section-bg">
       <div className="container px-16">
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-10 lg:flex-row lg:gap-20">
           <div className="flex max-w-sm flex-col justify-between gap-10">

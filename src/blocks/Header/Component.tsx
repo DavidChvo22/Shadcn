@@ -29,7 +29,7 @@ const HeaderBlock: React.FC<HeaderBlockProps> = ({
               Launching Soon <Sparkles className="ml-1 size-3.5" />
             </Badge>
 
-            <h1 className=" text-5xl font-bold text-black md:text-6xl lg:text-7xl">{title}</h1>
+            <h1 className=" text-5xl font-bold text-foreground md:text-6xl lg:text-7xl">{title}</h1>
             <p className="text-muted-foreground mt-6 max-w-xl text-xl">{description}</p>
 
             <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">

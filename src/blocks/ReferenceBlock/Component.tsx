@@ -64,7 +64,7 @@ interface ReferenceBlockProps {
 
 const ReferenceBlock: React.FC<ReferenceBlockProps> = ({ title, testimonials }) => {
   return (
-    <section className="py-32 bg-[#e2e8f0]">
+    <section className="py-32 bg-section-bg">
       <div className="container px-16">
         <Carousel className="w-full">
           <div className="mb-8 flex justify-between px-1 lg:mb-12">

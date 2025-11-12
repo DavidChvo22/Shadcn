@@ -15,7 +15,7 @@ interface FaqBlockProps {
 const FaqBlock: React.FC<FaqBlockProps> = (props) => {
   const { faqs } = props
   return (
-    <section className="py-32 bg-[#e2e8f0]">
+    <section className="py-32 bg-section-bg">
       <div className="container px-16">
         <h2 className="mb-12 mt-2 text-xl md:text-4xl">Frequently Asked Questions</h2>
         <Accordion type="multiple">
@@ -23,12 +23,14 @@ const FaqBlock: React.FC<FaqBlockProps> = (props) => {
             <AccordionItem
               key={index}
               value={`item-${index}`}
-              className="bg-muted mb-2 rounded-md border-b-0"
+              className="bg-section-bg mb-2 rounded-md border-b-0"
             >
-              <AccordionTrigger className="text-left bg-[#e2e8f0] md:text-lg hover:no-underline mb-0 pb-0">
+              <AccordionTrigger className="text-left bg-section-bg dark:bg-section-bg md:text-lg hover:no-underline mb-0 pb-0">
                 {faq.question}
               </AccordionTrigger>
-              <AccordionContent className="text-sm bg-[#e2e8f0]">{faq.answer}</AccordionContent>
+              <AccordionContent className="text-sm bg-section-bg dark:bg-section-bg">
+                {faq.answer}
+              </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

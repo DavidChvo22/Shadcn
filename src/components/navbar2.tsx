@@ -101,7 +101,7 @@ const Navbar2 = ({
   },
 }: Navbar2Props) => {
   return (
-    <section className="py-4 bg-[#e2e8f0]">
+    <section className="py-4 bg-section-bg">
       <div className="container">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
@@ -120,12 +120,7 @@ const Navbar2 = ({
             </div>
           </div>
           <div className="flex gap-2">
-            <Button
-              asChild
-              variant="outline"
-              size="sm"
-              className="bg-black text-[#99f6e4] rounded-lg"
-            >
+            <Button asChild variant="black-cyan" size="sm" className="rounded-md">
               <a href={auth.login.url}>Vyskladajte si svoj web</a>
             </Button>
           </div>
@@ -178,7 +173,7 @@ const renderMenuItem = (item: MenuItem) => {
         <NavigationMenuTrigger className="bg-transparent text-sm font-medium hover:text-primary focus-visible:outline-none">
           {item.title}
         </NavigationMenuTrigger>
-        <NavigationMenuContent className="origin-top-center data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 data-[motion^=from-]:animate-in data-[motion^=from-]:fade-in data-[motion^=to-]:animate-out data-[motion^=to-]:fade-out data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:zoom-in-90 relative bg-white z-50 top-11 w-full overflow-hidden rounded-md border shadow md:absolute md:left-1/2 md:w-80 md:-translate-x-1/2">
+        <NavigationMenuContent className="origin-top-center data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 data-[motion^=from-]:animate-in data-[motion^=from-]:fade-in data-[motion^=to-]:animate-out data-[motion^=to-]:fade-out data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:zoom-in-90 relative bg-popover z-50 top-11 w-full overflow-hidden rounded-md border shadow md:absolute md:left-1/2 md:w-80 md:-translate-x-1/2">
           {item.items.map((subItem) => (
             <NavigationMenuLink asChild key={subItem.title} className="w-full">
               <SubMenuLink item={subItem} />

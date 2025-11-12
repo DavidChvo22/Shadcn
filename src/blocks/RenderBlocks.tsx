@@ -2,13 +2,6 @@ import React, { Fragment } from 'react'
 
 import type { Page } from '@/payload-types'
 
-import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
-import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { ContentBlock } from '@/blocks/Content/Component'
-import { FormBlock } from '@/blocks/Form/Component'
-import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import { ExampleBlock } from '@/blocks/ExampleBlock/Component'
-import { HeaderBlock } from '@/blocks/Header/Component'
 import { FlowBlock } from '@/blocks/FlowBlock/Component'
 import { FaqBlock } from '@/blocks/FaqBlock/Component'
 import { ContactBlock } from '@/blocks/ContactBlock/Component'

@@ -21,7 +21,7 @@ const OptionsBlock: React.FC<OptionsBlockProps> = ({
   }
 
   return (
-    <section className="bg-[#e2e8f0] py-32">
+    <section className="bg-section-bg py-32">
       <div className="container px-16">
         <div className="flex flex-col items-start gap-20 md:flex-row md:items-center">
           <div className="w-full lg:w-[50%]">

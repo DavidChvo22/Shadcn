@@ -8,7 +8,7 @@ interface FlowBlockProps {
 
 const FlowBlock: React.FC<FlowBlockProps> = ({ steps }) => {
   return (
-    <section className="py-32 bg-[#e2e8f0]">
+    <section className="py-32 bg-section-bg">
       <div className="container px-16">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-20">
           <div className="flex h-fit items-center gap-2.5 whitespace-nowrap text-lg">
