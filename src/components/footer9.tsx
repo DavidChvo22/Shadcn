@@ -63,7 +63,7 @@ const Footer9 = () => {
               </p>
               <div className="flex items-center gap-3">
                 <Button variant="black-cyan">Start for free</Button>
-                <Button variant="outline" className="bg-transparent rounded-xl">
+                <Button className="rounded-xl" variant="outline">
                   Compare plans
                 </Button>
               </div>

@@ -28,6 +28,7 @@ import { ContactBlock } from '@/blocks/ContactBlock/config'
 import { OptionsBlock } from '@/blocks/OptionsBlock/config'
 import { CTABlock } from '@/blocks/CTABlock/config'
 import { ReferenceBlock } from '@/blocks/ReferenceBlock/config'
+import { ConfiguratorBlock } from '@/blocks/ConfiguratorBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -94,6 +95,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 OptionsBlock,
                 CTABlock,
                 ReferenceBlock,
+                ConfiguratorBlock,
               ],
               required: true,
               admin: {

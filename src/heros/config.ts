@@ -39,6 +39,10 @@ export const hero: Field = {
           label: 'Custom',
           value: 'customHero',
         },
+        {
+          label: 'Hero 223',
+          value: 'hero223',
+        },
       ],
       required: true,
     },
@@ -95,7 +99,7 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact', 'hero223'].includes(type),
       },
       relationTo: 'media',
       required: true,

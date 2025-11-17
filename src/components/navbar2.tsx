@@ -101,7 +101,7 @@ const Navbar2 = ({
   },
 }: Navbar2Props) => {
   return (
-    <section className="py-4 bg-section-bg">
+    <section className="py-4 bg-accent">
       <div className="container">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
@@ -188,7 +188,7 @@ const renderMenuItem = (item: MenuItem) => {
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
         href={item.url}
-        className="bg-transparent hover:bg-muted hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
+        className="bg-transparent hover:bg-accent hover:text-accent-foreground group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors"
       >
         {item.title}
       </NavigationMenuLink>

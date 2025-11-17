@@ -35,7 +35,7 @@ const OptionsBlock: React.FC<OptionsBlockProps> = ({
               ))}
             </ul>
             {buttonText && buttonLink && (
-              <Button className="bg-transparent rounded-xl" variant="outline">
+              <Button className="rounded-xl" variant="outline">
                 <Link href={buttonLink}>{buttonText}</Link>
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>

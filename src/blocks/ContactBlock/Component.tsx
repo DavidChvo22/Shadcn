@@ -1,4 +1,7 @@
+'use client'
+
 import React from 'react'
+import { useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -20,6 +23,17 @@ const ContactBlock = ({
   email = 'email@example.com',
   web = { label: 'shadcnblocks.com', url: 'https://shadcnblocks.com' },
 }: ContactBlockProps) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
+
+  const onSubmit = (data: unknown) => {
+    console.log(data)
+    // Handle form submission here
+  }
+
   return (
     <section className="py-32 bg-section-bg">
       <div className="container px-16">
@@ -53,56 +67,58 @@ const ContactBlock = ({
               </ul>
             </div>
           </div>
-          <div className="mr-32 flex max-w-3xl flex-col gap-6 rounded-lg p-10">
-            <div className="flex gap-4">
-              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="firstname">First Name</Label>
-                <Input
-                  type="text"
-                  id="firstname"
-                  placeholder="First Name"
-                  className="border-purple-300 rounded-lg"
-                />
+          <div className="md:mr-32 flex max-w-3xl flex-col gap-6 rounded-lg md:p-10">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+              <div className="flex gap-4">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="firstname">First Name</Label>
+                  <Input
+                    type="text"
+                    id="firstname"
+                    placeholder="First Name"
+                    className="rounded-lg"
+                  />
+                </div>
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="lastname">Last Name</Label>
+                  <Input type="text" id="lastname" placeholder="Last Name" className="rounded-lg" />
+                </div>
               </div>
               <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="lastname">Last Name</Label>
+                <Label htmlFor="email">Email</Label>
                 <Input
-                  type="text"
-                  id="lastname"
-                  placeholder="Last Name"
-                  className="border-purple-300 rounded-lg"
+                  type="email"
+                  id="email"
+                  placeholder="Email"
+                  className={`rounded-lg ${errors.email ? 'border-destructive' : ''}`}
+                  {...register('email', {
+                    required: 'Email je povinný',
+                    pattern: {
+                      value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                      message: 'Neplatný email',
+                    },
+                  })}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-destructive">{errors.email.message as string}</p>
+                )}
+              </div>
+              <div className="grid w-full items-center gap-1.5">
+                <Label htmlFor="subject">Subject</Label>
+                <Input type="text" id="subject" placeholder="Subject" className="rounded-lg" />
+              </div>
+              <div className="grid w-full gap-1.5">
+                <Label htmlFor="message">Message</Label>
+                <Textarea
+                  placeholder="Type your message here."
+                  id="message"
+                  className="rounded-lg"
                 />
               </div>
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Email"
-                className="border-purple-300 rounded-lg"
-              />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                type="text"
-                id="subject"
-                placeholder="Subject"
-                className="border-purple-300 rounded-lg"
-              />
-            </div>
-            <div className="grid w-full gap-1.5">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                placeholder="Type your message here."
-                id="message"
-                className="border-purple-300 rounded-lg"
-              />
-            </div>
-            <Button className="w-full" variant="black-cyan">
-              Send Message
-            </Button>
+              <Button type="submit" className="w-full" variant="black-cyan">
+                Send Message
+              </Button>
+            </form>
           </div>
         </div>
       </div>

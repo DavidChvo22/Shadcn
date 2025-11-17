@@ -157,7 +157,7 @@ export interface Page {
   id: string;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero' | 'hero223';
     title?: {
       root: {
         type: string;
@@ -216,6 +216,7 @@ export interface Page {
     | OptionsBlock
     | CTABlock
     | ReferenceBlock
+    | ConfiguratorBlock
   )[];
   meta?: {
     title?: string | null;
@@ -916,6 +917,50 @@ export interface ReferenceBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConfiguratorBlock".
+ */
+export interface ConfiguratorBlock {
+  categories?:
+    | {
+        name: string;
+        subcategories?:
+          | {
+              name: string;
+              description?: string | null;
+              pages?:
+                | {
+                    name: string;
+                    default?: boolean | null;
+                    price?: number | null;
+                    blocks?:
+                      | {
+                          blockName:
+                            | 'CTABlock'
+                            | 'FlowBlock'
+                            | 'FaqBlock'
+                            | 'ReferenceBlock'
+                            | 'OptionsBlock'
+                            | 'ContactBlock';
+                          default?: boolean | null;
+                          price?: number | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'configuratorBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1233,6 +1278,7 @@ export interface PagesSelect<T extends boolean = true> {
         optionsBlock?: T | OptionsBlockSelect<T>;
         ctaBlock?: T | CTABlockSelect<T>;
         referenceBlock?: T | ReferenceBlockSelect<T>;
+        configuratorBlock?: T | ConfiguratorBlockSelect<T>;
       };
   meta?:
     | T
@@ -1441,6 +1487,43 @@ export interface ReferenceBlockSelect<T extends boolean = true> {
         role?: T;
         avatar?: T;
         content?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ConfiguratorBlock_select".
+ */
+export interface ConfiguratorBlockSelect<T extends boolean = true> {
+  categories?:
+    | T
+    | {
+        name?: T;
+        subcategories?:
+          | T
+          | {
+              name?: T;
+              description?: T;
+              pages?:
+                | T
+                | {
+                    name?: T;
+                    default?: T;
+                    price?: T;
+                    blocks?:
+                      | T
+                      | {
+                          blockName?: T;
+                          default?: T;
+                          price?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
         id?: T;
       };
   id?: T;

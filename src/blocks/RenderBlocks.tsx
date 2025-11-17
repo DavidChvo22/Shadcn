@@ -8,6 +8,7 @@ import { ContactBlock } from '@/blocks/ContactBlock/Component'
 import { OptionsBlock } from './OptionsBlock/Component'
 import { CTABlock } from '@/blocks/CTABlock/Component'
 import { ReferenceBlock } from '@/blocks/ReferenceBlock/Component'
+import { ConfiguratorBlock } from '@/blocks/ConfiguratorBlock/Component'
 
 const blockComponents = {
   /* archive: ArchiveBlock,
@@ -23,6 +24,7 @@ const blockComponents = {
   optionsBlock: OptionsBlock,
   ctaBlock: CTABlock,
   referenceBlock: ReferenceBlock,
+  configuratorBlock: ConfiguratorBlock,
 } as const
 
 type BlockType = keyof typeof blockComponents

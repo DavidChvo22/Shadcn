@@ -12,8 +12,8 @@ const FlowBlock: React.FC<FlowBlockProps> = ({ steps }) => {
       <div className="container px-16">
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-20">
           <div className="flex h-fit items-center gap-2.5 whitespace-nowrap text-lg">
-            <span className="size-3 shrink-0 rounded-full bg-green-500"></span>
-            Zacnite Dnes
+            <span className="size-3 shrink-0 rounded-full bg-primary"></span>
+            Začnite Dnes
           </div>
           <div>
             <h2 className="mb-11 text-3xl lg:text-5xl">
