@@ -7,7 +7,7 @@ import type { OptionsBlock as OptionsBlockProps } from '@/payload-types'
 import { Check, ChevronRight } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 
 const OptionsBlock: React.FC<OptionsBlockProps> = ({
   title,
@@ -35,7 +35,10 @@ const OptionsBlock: React.FC<OptionsBlockProps> = ({
               ))}
             </ul>
             {buttonText && buttonLink && (
-              <Button className="rounded-xl" variant="outline">
+              <Button
+                className="hover:scale-105 transition-all duration-200 !rounded-lg !border-2 !border-border bg-muted/50 shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:hover:bg-input/50"
+                variant="ghost"
+              >
                 <Link href={buttonLink}>{buttonText}</Link>
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
@@ -45,10 +48,10 @@ const OptionsBlock: React.FC<OptionsBlockProps> = ({
             <div className="z-1 to-background absolute inset-0 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-transparent opacity-30"></div>
             <div className="relative z-10 m-auto w-[80%]">
               <img
-                src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/placeholder-1.svg"
-                alt="placeholder hero"
-                className="max-h-[350px] w-full rounded-md object-cover"
-              ></img>
+                src="/images/options-illustration.svg"
+                alt="Options illustration"
+                className="max-h-[350px] w-full rounded-md object-contain"
+              />
             </div>
             <div className="z-5 bg-linear-to-r from-background/50 to-background/50 absolute inset-0 via-transparent"></div>
             <div className="z-5 bg-linear-to-t from-background/50 to-background/50 absolute inset-0 via-transparent"></div>

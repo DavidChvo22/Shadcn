@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Select,
   SelectContent,
@@ -20,11 +20,19 @@ import { Separator } from '@/components/ui/separator'
 import { Checkbox } from '@/components/ui/checkbox'
 import { BadgeCheck } from 'lucide-react'
 import type { ConfiguratorBlock as ConfiguratorBlockType } from '@/payload-types'
+import { useTranslations, useLocale } from 'next-intl'
 
 type ConfiguratorBlockProps = ConfiguratorBlockType
 
+const includedKeys = ['sections', 'responsive', 'seo', 'support'] as const
+
 const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
-  const { categories } = props
+  const t = useTranslations('ConfiguratorBlock')
+  const locale = useLocale()
+  const { categories, currency: currencyFromProps, priceScale: priceScaleFromProps } = props
+  const currency = currencyFromProps || 'EUR'
+  const priceScale =
+    typeof priceScaleFromProps === 'number' && priceScaleFromProps >= 0 ? priceScaleFromProps : 0
   const [selectedCategoryName, setSelectedCategoryName] = useState<string>('')
   const [selectedSubcategoryName, setSelectedSubcategoryName] = useState<string>('')
   const [openPages, setOpenPages] = useState<string[]>([])
@@ -72,7 +80,7 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
   if (!categories || !Array.isArray(categories) || categories.length === 0) {
     return (
       <div className="container px-16 py-8">
-        <p className="text-muted-foreground">No categories configured</p>
+        <p className="text-muted-foreground">{t('errors.noCategories')}</p>
         {process.env.NODE_ENV === 'development' && (
           <pre className="mt-4 text-xs">{JSON.stringify(props, null, 2)}</pre>
         )}
@@ -93,12 +101,11 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
     })
   }
 
-  // Calculate total price from selected pages and blocks
+  // Calculate total price from selected blocks only
   const calculateTotalPrice = () => {
     if (!selectedSubcategory?.pages) return 0
     let total = 0
     selectedSubcategory.pages.forEach((page) => {
-      if (page.price) total += page.price
       if (page.blocks) {
         page.blocks.forEach((block, blockIndex) => {
           const blockKey = `${page.name}-${blockIndex}`
@@ -113,148 +120,243 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
 
   const totalPrice = calculateTotalPrice()
 
+  const formatPrice = useCallback(
+    (value: number) => {
+      const resolvedLocale = locale || 'sk-SK'
+      let resolvedCurrency = currency || 'EUR'
+      let formatter: Intl.NumberFormat
+      try {
+        formatter = new Intl.NumberFormat(resolvedLocale, {
+          style: 'currency',
+          currency: resolvedCurrency,
+        })
+      } catch {
+        resolvedCurrency = 'EUR'
+        formatter = new Intl.NumberFormat(resolvedLocale, {
+          style: 'currency',
+          currency: resolvedCurrency,
+        })
+      }
+      const divisor = Math.pow(10, priceScale)
+      return formatter.format((value || 0) / (divisor || 1))
+    },
+    [locale, currency, priceScale],
+  )
+
   return (
-    <div className="container px-16 py-8">
-      <h1 className="mb-8 text-4xl font-semibold">Vyskladajte si svoj Web</h1>
+    <div className="container px-16 py-32">
+      <h1 className="mb-8 text-4xl font-semibold">{t('heading')}</h1>
 
-      <div className="mb-6 flex flex-col gap-6 lg:flex-row">
-        <div className="flex-1 space-y-4">
-          <div>
-            <label className="mb-2 block text-sm font-medium">Select Category</label>
-            <Select value={selectedCategoryName} onValueChange={handleCategoryChange}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choose a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories
-                  .filter((cat) => cat?.name)
-                  .map((category) => (
-                    <SelectItem key={category.name} value={category.name}>
-                      {category.name}
-                    </SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {selectedCategory && selectedCategory.subcategories && (
-            <div>
-              <label className="mb-2 block text-sm font-medium">Select Subcategory</label>
-              <Select value={selectedSubcategoryName} onValueChange={handleSubcategoryChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose a subcategory" />
+      <div className="flex flex-col gap-6 lg:flex-row">
+        {/* Ľavá časť - Selectory a Pages/Bloky */}
+        <div className="flex-1 space-y-6">
+          {/* Selectory vedľa seba */}
+          <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+            <div className="flex-1">
+              <label className="mb-2 block text-sm font-medium">{t('selectTypeLabel')}</label>
+              <Select value={selectedCategoryName} onValueChange={handleCategoryChange}>
+                <SelectTrigger className="w-full rounded-3xl border-2 border-border">
+                  <SelectValue placeholder={t('selectTypePlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                  {selectedCategory.subcategories
-                    .filter((sub) => sub?.name)
-                    .map((subcategory) => (
-                      <SelectItem key={subcategory.name} value={subcategory.name}>
-                        {subcategory.name}
+                  {categories
+                    .filter((cat) => cat?.name)
+                    .map((category) => (
+                      <SelectItem key={category.name} value={category.name}>
+                        {category.name}
                       </SelectItem>
                     ))}
                 </SelectContent>
               </Select>
             </div>
-          )}
 
-          {selectedSubcategory && selectedSubcategory.pages && (
-            <div className="mt-4">
-              {selectedSubcategory.description && (
-                <p className="text-muted-foreground mb-4 text-sm">
-                  {selectedSubcategory.description}
-                </p>
-              )}
-              <Accordion
-                type="multiple"
-                value={openPages}
-                onValueChange={setOpenPages}
-                className="w-full"
-              >
-                {selectedSubcategory.pages
-                  .filter((page) => page?.name)
-                  .map((page) => {
-                    const pageName = page?.name as string
-                    const pagePrice = page?.price ?? 0
-                    const blockTotal =
-                      page?.blocks?.reduce((sum, block, blockIndex) => {
-                        const blockKey = `${pageName}-${blockIndex}`
-                        if (selectedBlocks.has(blockKey) && block?.price) {
-                          return sum + Number(block.price)
-                        }
-                        return sum
-                      }, 0) ?? 0
-                    const isOpen = openPages.includes(pageName)
+            {selectedCategory && selectedCategory.subcategories ? (
+              <div className="flex-1">
+                <label className="mb-2 block text-sm font-medium">{t('selectCategoryLabel')}</label>
+                <Select value={selectedSubcategoryName} onValueChange={handleSubcategoryChange}>
+                  <SelectTrigger className="w-full rounded-3xl border-2 border-border">
+                    <SelectValue placeholder={t('selectCategoryPlaceholder')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {selectedCategory.subcategories
+                      .filter((sub) => sub?.name)
+                      .map((subcategory) => (
+                        <SelectItem key={subcategory.name} value={subcategory.name}>
+                          {subcategory.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : (
+              <div className="flex-1 hidden md:block" />
+            )}
+          </div>
 
-                    return (
-                      <AccordionItem key={pageName} value={pageName}>
-                        <AccordionTrigger className="text-base font-medium">
-                          <div className="flex items-center justify-between w-full pr-4">
-                            <span>{pageName}</span>
-                            <div className="flex items-center gap-2">
-                              {!isOpen ? (
-                                <>
-                                  <span className="text-muted-foreground text-sm font-normal">
-                                    Page: €{pagePrice}
-                                  </span>
-                                  {blockTotal > 0 && (
+          {/* Pages a bloky v samostatnom okne */}
+          {selectedSubcategory &&
+            selectedSubcategory.pages &&
+            (() => {
+              // Group pages by their group property
+              const groupedPages = selectedSubcategory.pages
+                .filter((page) => page?.name)
+                .reduce(
+                  (acc, page) => {
+                    const group = page?.group || 'stranky'
+                    if (!acc[group]) {
+                      acc[group] = []
+                    }
+                    acc[group].push(page)
+                    return acc
+                  },
+                  {} as Record<string, typeof selectedSubcategory.pages>,
+                )
+
+              const groupLabels: Record<string, string> = {
+                stranky: t('groups.stranky'),
+                layout: t('groups.layout'),
+                extra: t('groups.extra'),
+              }
+
+              return (
+            <Card className="rounded-3xl border-2 border-border bg-background shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-lg font-medium">{t('pagesAndBlocks')}</CardTitle>
+                {selectedSubcategory.description && (
+                  <p className="text-muted-foreground text-sm mt-2">
+                    {selectedSubcategory.description}
+                  </p>
+                )}
+              </CardHeader>
+                  <CardContent className="space-y-4">
+                    {Object.entries(groupedPages).map(([groupKey, pagesInGroup]) => {
+                      const groupTotal = pagesInGroup.reduce((sum, page) => {
+                        const pageName = page?.name as string
+                        return (
+                          sum +
+                          (page?.blocks?.reduce((blockSum, block, blockIndex) => {
+                            const blockKey = `${pageName}-${blockIndex}`
+                            if (selectedBlocks.has(blockKey) && block?.price) {
+                              return blockSum + Number(block.price)
+                            }
+                            return blockSum
+                          }, 0) ?? 0)
+                        )
+                      }, 0)
+
+                      return (
+                        <div
+                          key={groupKey}
+                          className="border border-border rounded-2xl overflow-hidden"
+                        >
+                          <Accordion
+                            type="multiple"
+                            value={openPages}
+                            onValueChange={setOpenPages}
+                            className="w-full"
+                          >
+                            <AccordionItem value={`group-${groupKey}`} className="border-0">
+                              <AccordionTrigger className="px-4 py-3 bg-muted/30 hover:bg-muted/50 font-semibold">
+                                <div className="flex items-center justify-between w-full pr-4">
+                                  <span>{groupLabels[groupKey] || groupKey}</span>
+                                  {groupTotal > 0 && (
                                     <span className="text-muted-foreground text-sm font-normal">
-                                      Blocks: €{blockTotal}
+                                      {formatPrice(groupTotal)}
                                     </span>
                                   )}
-                                </>
-                              ) : (
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="px-4 pb-0">
+                <Accordion
+                  type="multiple"
+                  value={openPages}
+                  onValueChange={setOpenPages}
+                  className="w-full"
+                >
+                                  {pagesInGroup.map((page) => {
+                      const pageName = page?.name as string
+                      const blockTotal =
+                        page?.blocks?.reduce((sum, block, blockIndex) => {
+                          const blockKey = `${pageName}-${blockIndex}`
+                          if (selectedBlocks.has(blockKey) && block?.price) {
+                            return sum + Number(block.price)
+                          }
+                          return sum
+                        }, 0) ?? 0
+
+                      return (
+                                      <AccordionItem
+                                        key={pageName}
+                                        value={pageName}
+                                        className="border-b last:border-0"
+                                      >
+                                        <AccordionTrigger className="text-base font-medium py-3">
+                            <div className="flex items-center justify-between w-full pr-4">
+                              <span>{pageName}</span>
+                              {blockTotal > 0 && (
                                 <span className="text-muted-foreground text-sm font-normal">
-                                  +€{pagePrice}
+                                                {t('blocksPrice', {
+                                                  price: formatPrice(blockTotal),
+                                                })}
                                 </span>
                               )}
                             </div>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          {page.blocks && page.blocks.length > 0 ? (
-                            <div className="pt-2 space-y-2">
-                              {page.blocks
-                                .filter((block) => block?.blockName)
-                                .map((block, blockIndex) => {
-                                  const blockKey = `${pageName}-${blockIndex}`
-                                  const isSelected = selectedBlocks.has(blockKey)
-                                  return (
-                                    <div
-                                      key={blockIndex}
-                                      className="text-muted-foreground flex items-center justify-between text-sm py-1"
-                                    >
-                                      <div className="flex items-center gap-2">
-                                        <Checkbox
-                                          checked={isSelected}
-                                          onCheckedChange={() => toggleBlock(pageName, blockIndex)}
-                                          id={`block-${blockKey}`}
-                                        />
-                                        <label
-                                          htmlFor={`block-${blockKey}`}
-                                          className="cursor-pointer"
-                                        >
-                                          {block.blockName}
-                                        </label>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            {page.blocks && page.blocks.length > 0 ? (
+                                            <div className="pt-2 pb-4 space-y-2">
+                                {page.blocks
+                                  .filter((block) => block?.blockName)
+                                  .map((block, blockIndex) => {
+                                    const blockKey = `${pageName}-${blockIndex}`
+                                    const isSelected = selectedBlocks.has(blockKey)
+                                    return (
+                                      <div
+                                        key={blockIndex}
+                                        className="text-muted-foreground flex items-center justify-between text-sm py-1"
+                                      >
+                                        <div className="flex items-center gap-2">
+                                          <Checkbox
+                                            checked={isSelected}
+                                            onCheckedChange={() =>
+                                              toggleBlock(pageName, blockIndex)
+                                            }
+                                            id={`block-${blockKey}`}
+                                          />
+                                          <label
+                                            htmlFor={`block-${blockKey}`}
+                                            className="cursor-pointer"
+                                          >
+                                            {block.blockName}
+                                          </label>
+                                        </div>
+                                        {block.price && block.price > 0 && (
+                                                        <span>{formatPrice(block.price)}</span>
+                                        )}
                                       </div>
-                                      {block.price && block.price > 0 && (
-                                        <span>+€{block.price}</span>
-                                      )}
-                                    </div>
-                                  )
-                                })}
-                            </div>
-                          ) : (
-                            <p className="text-muted-foreground text-sm pt-2">
-                              No blocks configured
-                            </p>
-                          )}
-                        </AccordionContent>
-                      </AccordionItem>
-                    )
-                  })}
-              </Accordion>
-            </div>
-          )}
+                                    )
+                                  })}
+                              </div>
+                            ) : (
+                                            <p className="text-muted-foreground text-sm pt-2 pb-4">
+                                              {t('noBlocks')}
+                                            </p>
+                            )}
+                          </AccordionContent>
+                        </AccordionItem>
+                      )
+                    })}
+                </Accordion>
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        </div>
+                      )
+                    })}
+              </CardContent>
+            </Card>
+              )
+            })()}
         </div>
 
         {/* Pricing Card */}
@@ -262,46 +364,47 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
           <Card className="rounded-3xl border border-border shadow-sm">
             <CardHeader>
               <CardTitle className="text-foreground text-lg font-medium">
-                Your Configuration
+                {t('summaryTitle')}
               </CardTitle>
               <div className="mt-4">
                 <div className="text-muted-foreground text-5xl font-semibold tracking-tight">
-                  €{totalPrice}
+                  {formatPrice(totalPrice)}
                 </div>
-                <div className="text-muted-foreground text-xs">Total price</div>
+                <div className="text-muted-foreground text-xs">{t('totalLabel')}</div>
               </div>
             </CardHeader>
 
             <CardContent className="px-7 pt-6">
               <p className="text-muted-foreground text-sm">
                 {selectedSubcategory
-                  ? `Configured: ${selectedSubcategory.name}`
-                  : 'Select a subcategory to see pricing'}
+                  ? t('selectedConfiguration', { name: selectedSubcategory.name })
+                  : t('selectCategoryToSeePrice')}
               </p>
 
-              <Button className="mt-6 w-full" variant="default">
-                Get Started
+              <Button
+                className="h-10 mt-6 w-full hover:scale-105 transition-all duration-200"
+                variant="default"
+              >
+                {t('continue')}
               </Button>
 
               <div className="relative mb-4 mt-12 flex items-center justify-center overflow-hidden">
                 <Separator />
-                <span className="text-muted-foreground px-3 text-xs opacity-50">INCLUDED</span>
+                <span className="text-muted-foreground px-3 text-xs opacity-50">
+                  {t('includedLabel')}
+                </span>
                 <Separator />
               </div>
 
               <ul className="mt-6 space-y-4">
-                <li className="flex items-center">
-                  <BadgeCheck className="text-muted-foreground size-5" />
-                  <span className="text-muted-foreground ml-3 text-sm">All selected blocks</span>
-                </li>
-                <li className="flex items-center">
-                  <BadgeCheck className="text-muted-foreground size-5" />
-                  <span className="text-muted-foreground ml-3 text-sm">Full customization</span>
-                </li>
-                <li className="flex items-center">
-                  <BadgeCheck className="text-muted-foreground size-5" />
-                  <span className="text-muted-foreground ml-3 text-sm">Priority support</span>
-                </li>
+                {includedKeys.map((key) => (
+                  <li key={key} className="flex items-center">
+                    <BadgeCheck className="text-muted-foreground size-6 shrink-0" />
+                    <span className="text-muted-foreground ml-3 text-sm">
+                      {t(`includedItems.${key}`)}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>

@@ -33,6 +33,8 @@ const CTABlock = () => {
 export { CTABlock }
  */
 
+'use client'
+
 interface CTABlockProps {
   title: string
   description: string
@@ -40,25 +42,80 @@ interface CTABlockProps {
   buttonLink: string
 }
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
+import React from 'react'
 
 const CTABlock: React.FC<CTABlockProps> = ({ title, description, buttonText, buttonLink }) => {
+  const isAnchorLink = buttonLink.startsWith('#')
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!isAnchorLink) return
+
+    e.preventDefault()
+    const elementId = buttonLink.slice(1)
+    if (!elementId) return
+
+    document.getElementById(elementId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <section>
-      <div className="border-border bg-accent max-w-full overflow-hidden border-y pt-10 md:pt-16 lg:pt-20">
+      <div className="border-border bg-primary text-primary-foreground max-w-full overflow-hidden border-y pt-10 md:pt-16 lg:pt-20">
         <div className="container px-16 relative flex flex-col md:flex-row md:space-x-12">
           <div className="mb-[18rem] md:mb-28 md:w-2/3 lg:shrink-0 xl:mb-20 xl:w-1/2">
             <h3 className="mb-3 text-4xl font-semibold md:mb-4 md:text-5xl lg:mb-6">{title}</h3>
-            <p className="text-muted-foreground mb-8 lg:text-lg">{description}</p>
-            <Button asChild variant="black-cyan">
-              <Link href={buttonLink}>{buttonText}</Link>
-            </Button>
+            <p className="text-primary-foreground/80 mb-8 lg:text-lg">{description}</p>
+            {isAnchorLink ? (
+              <Button
+                variant="secondary"
+                className="h-10 bg-background text-foreground hover:bg-background/90 hover:scale-105 transition-all duration-200"
+                onClick={handleAnchorClick}
+              >
+                {buttonText}
+              </Button>
+            ) : (
+              <Button
+                asChild
+                variant="secondary"
+                className="h-10 bg-background text-foreground hover:bg-background/90 hover:scale-105 transition-all duration-200"
+              >
+                <Link href={buttonLink}>{buttonText}</Link>
+              </Button>
+            )}
           </div>
           <div className="absolute bottom-0 right-1/2 mr-6 h-min w-[110%] max-w-md translate-x-1/2 md:-right-36 md:mr-0 md:w-3/4 md:max-w-xl md:translate-x-0 lg:mt-auto xl:relative xl:right-0 xl:h-full xl:w-full xl:max-w-full">
             <div className="aspect-[8/5] relative h-full min-h-[16rem] w-full">
-              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 -translate-x-[24%] translate-y-[24%] -rotate-[30deg] justify-center overflow-clip rounded-3xl shadow-lg md:max-xl:-translate-x-[8%] md:max-xl:translate-y-[16%]"></div>
-              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 -translate-x-[16%] translate-y-[8%] -rotate-[15deg] justify-center overflow-clip rounded-3xl shadow-xl md:max-xl:-translate-x-[6%] md:max-xl:translate-y-[6%]"></div>
-              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 items-center justify-center overflow-clip rounded-3xl shadow-2xl"></div>
+              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 -translate-x-[24%] translate-y-[24%] -rotate-[30deg] items-center justify-center overflow-hidden rounded-3xl p-4 shadow-lg md:max-xl:-translate-x-[8%] md:max-xl:translate-y-[16%]">
+                <div className="absolute top-4 right-4 z-50">
+                  <span
+                    className="size-3 rounded-full bg-primary animate-pulse"
+                    style={{
+                      animationDuration: '2s',
+                      boxShadow: '0 0 12px rgba(30, 157, 241, 1), 0 0 20px rgba(30, 157, 241, 0.6)',
+                      backgroundColor: '#1e9df1',
+                    }}
+                  ></span>
+                </div>
+                <img
+                  src="/images/cta-data-work.svg"
+                  alt="Data at work"
+                  className="h-[130%] w-[130%] translate-x-[5%] translate-y-[-15%] object-contain"
+                />
+              </div>
+              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 -translate-x-[16%] translate-y-[8%] -rotate-[15deg] items-center justify-center overflow-hidden rounded-3xl p-6 shadow-xl md:max-xl:-translate-x-[6%] md:max-xl:translate-y-[6%]">
+                <img
+                  src="/images/cta-ideas-flow.svg"
+                  alt="Ideas flow"
+                  className="h-[110%] w-[110%] translate-y-[-10%] object-contain"
+                />
+              </div>
+              <div className="aspect-[3/5] bg-background shadow-foreground/20 absolute right-0 top-0 z-40 flex w-3/5 items-center justify-center overflow-hidden rounded-3xl p-6 shadow-2xl">
+                <img
+                  src="/images/cta-landing-page.svg"
+                  alt="Landing page"
+                  className="h-[90%] w-[90%] translate-y-[-15%] object-contain"
+                />
+              </div>
             </div>
           </div>
         </div>

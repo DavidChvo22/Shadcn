@@ -1,0 +1,193 @@
+{
+  "Header": {
+    "searchLabel": "Search"
+  },
+  "Navbar2": {
+    "ctaPrimary": "Build your website",
+    "menu": {
+      "features": {
+        "title": "Features",
+        "items": {
+          "blog": {
+            "title": "Blog",
+            "description": "The latest news, updates, and tips"
+          },
+          "company": {
+            "title": "Company",
+            "description": "Our mission is to innovate and empower"
+          },
+          "careers": {
+            "title": "Careers",
+            "description": "Browse openings and learn about our culture"
+          },
+          "how-works": {
+            "title": "How it works",
+            "description": "See how the entire website creation process works"
+          },
+          "manage-web": {
+            "title": "How to manage your website",
+            "description": "Learn how to effectively manage and update your website"
+          }
+        }
+      },
+      "links": {
+        "gallery": "Gallery",
+        "resources": "Resources",
+        "contact": "Contact"
+      }
+    },
+    "auth": {
+      "login": "Log in"
+    }
+  },
+  "Hero": {
+    "CustomHero": {
+      "deliveryBadge": "Delivery within 14 days"
+    }
+  },
+  "ConfiguratorBlock": {
+    "heading": "Build your website",
+    "selectTypeLabel": "Choose website type",
+    "selectTypePlaceholder": "Choose website type",
+    "selectCategoryLabel": "Choose category",
+    "selectCategoryPlaceholder": "Choose category",
+    "pagesAndBlocks": "Pages & Blocks",
+    "noBlocks": "No blocks for this section",
+    "summaryTitle": "Your configuration",
+    "totalLabel": "Total price",
+    "selectedConfiguration": "Configuration: {name}",
+    "selectCategoryToSeePrice": "Select a category to show the price",
+    "continue": "Continue",
+    "includedLabel": "Included:",
+    "includedItems": {
+      "sections": "Project source code",
+      "responsive": "Optimised for mobile, testing and error notifications",
+      "seo": "Optimisation for Google and website performance",
+      "support": "1h consultation for deployment or customisation, guides and documentation"
+    },
+    "groups": {
+      "stranky": "Pages",
+      "layout": "Layout",
+      "extra": "Extra",
+      "pages": "Pages"
+    },
+    "pagePrice": "Page: {price}",
+    "blocksPrice": "Blocks: {price}",
+    "errors": {
+      "noCategories": "No categories configured"
+    }
+  },
+  "ContactBlock": {
+    "titleDefault": "Contact us",
+    "descriptionDefault": "We’re available for questions, feedback, or collaboration opportunities. Let us know how we can help!",
+    "contactDetailsHeading": "Contact details",
+    "labels": {
+      "phone": "Phone",
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "subject": "Subject",
+      "message": "Message"
+    },
+    "placeholders": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Your message..."
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "fieldRequired": "This field is required",
+      "emailInvalid": "Invalid email address"
+    },
+    "submit": "Send message",
+    "successMessage": "Thanks! Your message has been sent.",
+    "errorMessage": "Something went wrong. Please try again later or email us directly."
+  },
+  "FaqBlock": {
+    "title": "Have questions? We have answers"
+  },
+  "GalleryBlock": {
+    "preview": "Preview"
+  },
+  "FlowBlock": {
+    "badge": "Start today"
+  },
+  "Footer9": {
+    "heading": "Get started today.",
+    "subheading": "The website you need. No waiting, no complications.",
+    "primaryCta": "Build your website",
+    "secondaryCta": "View pricing",
+    "price": "From €299",
+    "priceLabel": "Starter package",
+    "features": {
+      "responsive": "Responsive design",
+      "sections": "Up to 5 sections",
+      "support": "30 days of support"
+    },
+    "sections": {
+      "services": {
+        "title": "Services",
+        "links": {
+          "webs": "Website development",
+          "configurator": "Configurator",
+          "addons": "Add-on services",
+          "partners": "Partner program"
+        }
+      },
+      "resources": {
+        "title": "Resources",
+        "links": {
+          "blog": "Blog",
+          "pricing": "Pricing",
+          "examples": "Website examples",
+          "gallery": "Gallery",
+          "faq": "FAQ",
+          "support": "Support",
+          "docs": "Documentation"
+        }
+      },
+      "contact": {
+        "title": "Contact",
+        "links": {
+          "tech": "Technical support",
+          "claims": "Claims & refunds"
+        }
+      },
+      "about": {
+        "title": "About us",
+        "links": {
+          "who": "Who we are",
+          "references": "References",
+          "career": "Careers",
+          "terms": "Terms & conditions"
+        }
+      }
+    },
+    "metaLinks": {
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "followUs": "Follow us:",
+    "linkedin": "LinkedIn",
+    "productHunt": "Product Hunt",
+    "copyright": "© 2024 Shadcnblocks.com. All rights reserved."
+  },
+  "FeatureCardsBlock": {
+    "heading": "Our projects",
+    "subheading": "Selected case studies"
+  },
+  "Hero243": {
+    "badge": "Delivery within 14 days",
+    "heading": "Create your website",
+    "flipWords": ["Fast", "Easy", "Reliable"],
+    "description": "A simple configurator, modern design and zero technical skills required. Pick a template, customize it to your needs and your site can be online today. Full control, no limits.",
+    "cta": "Build your website",
+    "stats": {
+      "fastDelivery": "Launch within 14 days",
+      "team": "Professional team",
+      "noFees": "No hidden fees"
+    }
+  }
+}

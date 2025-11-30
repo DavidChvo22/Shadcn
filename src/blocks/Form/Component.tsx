@@ -151,7 +151,7 @@ export const FormBlock: React.FC<
                   })}
               </div>
 
-              <Button form={formID} type="submit" variant="default">
+              <Button form={formID} type="submit" variant="default" className="h-10 hover:scale-105 transition-all duration-200">
                 {submitButtonLabel}
               </Button>
             </form>

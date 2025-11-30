@@ -3,10 +3,10 @@
 import type { PayloadAdminBarProps, PayloadMeUser } from '@payloadcms/admin-bar'
 
 import { cn } from '@/utilities/ui'
-import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from '@payloadcms/admin-bar'
+import { useLocale } from 'next-intl'
+import { useRouter, useSelectedLayoutSegments } from 'next/navigation'
 import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 import './index.scss'
 
@@ -41,6 +41,7 @@ export const AdminBar: React.FC<{
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
+  const locale = useLocale()
 
   const onAuthChange = React.useCallback((user: PayloadMeUser) => {
     setShow(Boolean(user?.id))
@@ -71,8 +72,8 @@ export const AdminBar: React.FC<{
           logo={<Title />}
           onAuthChange={onAuthChange}
           onPreviewExit={() => {
-            fetch('/next/exit-preview').then(() => {
-              router.push('/')
+            fetch(`/${locale}/next/exit-preview`).then(() => {
+              router.push(`/${locale}`)
               router.refresh()
             })
           }}

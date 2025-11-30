@@ -1,0 +1,193 @@
+{
+  "Header": {
+    "searchLabel": "Hľadať"
+  },
+  "Navbar2": {
+    "ctaPrimary": "Vyskladaj si web",
+    "menu": {
+      "features": {
+        "title": "Funkcie",
+        "items": {
+          "blog": {
+            "title": "Blog",
+            "description": "Najnovšie novinky, aktualizácie a tipy"
+          },
+          "company": {
+            "title": "Spoločnosť",
+            "description": "Našou misiou je inovovať a pomáhať"
+          },
+          "careers": {
+            "title": "Kariéra",
+            "description": "Pozrite si voľné pozície a kultúru tímu"
+          },
+          "how-works": {
+            "title": "Od nápadu po hotovú stránku",
+            "description": "Pozrite sa ako funguje celý postup vytvorenia stránky"
+          },
+          "manage-web": {
+            "title": "Ako spravovať svoj web",
+            "description": "Naučte sa ako efektívne spravovať a aktualizovať svoju webstránku"
+          }
+        }
+      },
+      "links": {
+        "gallery": "Naše projekty",
+        "resources": "Zdroje",
+        "contact": "Kontakt"
+      }
+    },
+    "auth": {
+      "login": "Prihlásiť sa"
+    }
+  },
+  "Hero": {
+    "CustomHero": {
+      "deliveryBadge": "Dodanie už do 14 dní"
+    }
+  },
+  "ConfiguratorBlock": {
+    "heading": "Vyskladajte si svoj web",
+    "selectTypeLabel": "Vyberte typ webu",
+    "selectTypePlaceholder": "Vyberte typ webu",
+    "selectCategoryLabel": "Vyberte kategóriu",
+    "selectCategoryPlaceholder": "Vyberte kategóriu",
+    "pagesAndBlocks": "Stránky a bloky",
+    "noBlocks": "Žiadne bloky pre túto sekciu",
+    "summaryTitle": "Vaša konfigurácia",
+    "totalLabel": "Celková cena",
+    "selectedConfiguration": "Konfigurácia: {name}",
+    "selectCategoryToSeePrice": "Vyberte kategóriu pre zobrazenie ceny",
+    "continue": "Pokračovať",
+    "includedLabel": "Zahrnuté:",
+    "includedItems": {
+      "sections": "Zdrojový kód projektu",
+      "responsive": "Optimalizované pre mobily, testovanie a oznámenia o chybách",
+      "seo": "Optimalizácia pre Google a výkon webu",
+      "support": "1h konzultácie k nasadeniu alebo k prispôsobeniu, návody a dokumentácie"
+    },
+    "groups": {
+      "stranky": "Stránky",
+      "layout": "Layout",
+      "extra": "Extra",
+      "pages": "Stránky"
+    },
+    "pagePrice": "Stránka: {price}",
+    "blocksPrice": "Bloky: {price}",
+    "errors": {
+      "noCategories": "Nie sú nastavené žiadne kategórie"
+    }
+  },
+  "ContactBlock": {
+    "titleDefault": "Kontaktujte nás",
+    "descriptionDefault": "Sme k dispozícii pre otázky, spätnú väzbu alebo spoluprácu. Ozvite sa nám!",
+    "contactDetailsHeading": "Kontaktné údaje",
+    "labels": {
+      "phone": "Telefón",
+      "email": "Email",
+      "firstName": "Meno",
+      "lastName": "Priezvisko",
+      "subject": "Predmet",
+      "message": "Správa"
+    },
+    "placeholders": {
+      "firstName": "Meno",
+      "lastName": "Priezvisko",
+      "email": "Email",
+      "subject": "Predmet",
+      "message": "Vaša správa..."
+    },
+    "validation": {
+      "emailRequired": "Email je povinný",
+      "fieldRequired": "Toto pole je povinné",
+      "emailInvalid": "Neplatný email"
+    },
+    "submit": "Odoslať správu",
+    "successMessage": "Ďakujeme! Vaša správa bola odoslaná.",
+    "errorMessage": "Niečo sa pokazilo. Skúste to prosím znova alebo nám napíšte priamo."
+  },
+  "FaqBlock": {
+    "title": "Máte otázky? Máme odpovede"
+  },
+  "GalleryBlock": {
+    "preview": "Náhľad"
+  },
+  "FlowBlock": {
+    "badge": "Začnite dnes"
+  },
+  "Footer9": {
+    "heading": "Začnite ešte dnes.",
+    "subheading": "Web, ktorý potrebujete. Bez zbytočného čakania a komplikácií.",
+    "primaryCta": "Vyskladaj si web",
+    "secondaryCta": "Zobraziť cenník",
+    "price": "Od 299€",
+    "priceLabel": "Základný balík",
+    "features": {
+      "responsive": "Responzívny dizajn",
+      "sections": "Do 5 sekcií",
+      "support": "30 dní podpora"
+    },
+    "sections": {
+      "services": {
+        "title": "Služby",
+        "links": {
+          "webs": "Tvorba webov",
+          "configurator": "Konfigurátor",
+          "addons": "Doplnkové služby",
+          "partners": "Partnerský program"
+        }
+      },
+      "resources": {
+        "title": "Zdroje",
+        "links": {
+          "blog": "Blog",
+          "pricing": "Cenník",
+          "examples": "Príklady webov",
+          "gallery": "Galéria",
+          "faq": "Často kladené otázky",
+          "support": "Podpora",
+          "docs": "Dokumentácia"
+        }
+      },
+      "contact": {
+        "title": "Kontakt",
+        "links": {
+          "tech": "Technická podpora",
+          "claims": "Reklamácie"
+        }
+      },
+      "about": {
+        "title": "O nás",
+        "links": {
+          "who": "Kto sme",
+          "references": "Referencie",
+          "career": "Kariéra",
+          "terms": "Obchodné podmienky"
+        }
+      }
+    },
+    "metaLinks": {
+      "privacy": "Ochrana súkromia",
+      "terms": "Obchodné podmienky"
+    },
+    "followUs": "Sledujte nás:",
+    "linkedin": "Linkedin",
+    "productHunt": "Product Hunt",
+    "copyright": "© 2024 Shadcnblocks.com. All rights reserved."
+  },
+  "FeatureCardsBlock": {
+    "heading": "Naše projekty",
+    "subheading": "Ukážky našej práce"
+  },
+  "Hero243": {
+    "badge": "DORUČENIE DO 14 DNÍ",
+    "heading": "Vytvor si svoju webstránku",
+    "flipWords": ["Rýchlo", "Jednoducho", "Spoľahlivo"],
+    "description": "Jednoduchý konfigurátor, moderný dizajn a žiadne technické znalosti. Vyber si šablónu, prispôsob si ju podľa seba a tvoja stránka môže byť online už do 14 dní. Plná kontrola, žiadne limity.",
+    "cta": "Vyskladaj si web",
+    "stats": {
+      "fastDelivery": "Spustenie do 14 dní",
+      "team": "Profesionálny kolektív",
+      "noFees": "Žiadne skryté poplatky"
+    }
+  }
+}

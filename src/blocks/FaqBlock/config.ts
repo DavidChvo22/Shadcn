@@ -1,4 +1,5 @@
 import type { Block } from 'payload'
+
 export const FaqBlock: Block = {
   slug: 'faqBlock',
   interfaceName: 'FaqBlock',
@@ -7,6 +8,16 @@ export const FaqBlock: Block = {
     plural: 'Faq Blocks',
   },
   fields: [
+    {
+      name: 'variant',
+      type: 'select',
+      options: [
+        { label: 'Blue background with white text', value: 'blue' },
+        { label: 'White background with black text', value: 'white' },
+      ],
+      defaultValue: 'blue',
+      label: 'Variant',
+    },
     {
       name: 'faqs',
       type: 'array',

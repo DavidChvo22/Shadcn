@@ -31,11 +31,5 @@ export const ContactBlock: Block = {
       required: true,
       label: 'Email',
     },
-    {
-      name: 'web',
-      type: 'text',
-      required: true,
-      label: 'Web',
-    },
   ],
 }

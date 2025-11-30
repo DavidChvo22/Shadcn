@@ -1,6 +1,8 @@
+'use client'
+
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import React from 'react'
 
 import type { Page, Post } from '@/payload-types'
@@ -45,13 +47,49 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
+  // Handle anchor links (scroll to element on same page)
+  const isAnchorLink = href.startsWith('#')
+
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isAnchorLink) {
+      e.preventDefault()
+      const elementId = href.substring(1)
+      const element = document.getElementById(elementId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+  }
+
   /* Ensure we don't break any styles set by richText */
   if (appearance === 'inline') {
+    if (isAnchorLink) {
+      return (
+        <a
+          className={cn(className)}
+          href={href}
+          onClick={handleAnchorClick}
+          {...newTabProps}
+        >
+          {label && label}
+          {children && children}
+        </a>
+      )
+    }
     return (
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}
       </Link>
+    )
+  }
+
+  if (isAnchorLink) {
+    return (
+      <Button className={className} size={size} variant={appearance} onClick={handleAnchorClick}>
+        {label && label}
+        {children && children}
+      </Button>
     )
   }
 

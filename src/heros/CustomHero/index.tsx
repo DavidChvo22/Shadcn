@@ -3,10 +3,11 @@ import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
 
 import type { Page } from '@/payload-types'
+import { getTranslations } from 'next-intl/server'
 
 type RichTextField = NonNullable<Page['hero']['title']>
 
-type CustomHeroProps = Page['hero']
+type CustomHeroProps = Page['hero'] & { locale?: string }
 
 const isRichTextField = (value: unknown): value is RichTextField => {
   return Boolean(value && typeof value === 'object' && 'root' in (value as Record<string, unknown>))
@@ -20,7 +21,15 @@ const isNonEmptyString = (value: unknown): value is string => {
   return typeof value === 'string' && value.trim().length > 0
 }
 
-const CustomHero: React.FC<CustomHeroProps> = ({ title, description, buttonText, buttonLink }) => {
+const CustomHero = async ({
+  title,
+  description,
+  buttonText,
+  buttonLink,
+  locale,
+}: CustomHeroProps) => {
+  const t = await getTranslations({ locale: locale as string, namespace: 'Hero.CustomHero' })
+
   const titleField = isRichTextField(title) ? title : undefined
   const hasTitle = richTextHasContent(titleField)
 
@@ -35,7 +44,7 @@ const CustomHero: React.FC<CustomHeroProps> = ({ title, description, buttonText,
   if (!hasTitle && !hasDescription && !hasButton) return null
 
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden py-32 custom-hero-gradient">
+    <section className="relative flex min-h-screen items-center overflow-hidden custom-hero-gradient">
       <div className="container relative px-16">
         {/* Background pattern with dots */}
         <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(var(--primary)_1px,transparent_1px)] opacity-25 [background-size:20px_20px]"></div>
@@ -49,20 +58,10 @@ const CustomHero: React.FC<CustomHeroProps> = ({ title, description, buttonText,
                 enableGutter={false}
               />
             ) : null}
-            {hasButton && buttonLabel && buttonHref && (
-              <div className="mt-20 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <Button size="lg" className="w-full sm:w-auto rounded-xl">
-                  <CMSLink url={buttonHref}>{buttonLabel}</CMSLink>
-                </Button>
-                <CMSLink url={buttonHref} className="text-foreground">
-                  Explore benefits -&gt;
-                </CMSLink>
-              </div>
-            )}
 
             {hasDescription ? (
               descriptionString ? (
-                <p className="text-muted-foreground mt-12 max-w-3xl text-xl lg:mt-40">
+                <p className="text-muted-foreground mt-6 max-w-3xl text-xl lg:mt-20">
                   {descriptionString}
                 </p>
               ) : (
@@ -75,10 +74,6 @@ const CustomHero: React.FC<CustomHeroProps> = ({ title, description, buttonText,
                 )
               )
             ) : null}
-          </div>
-          <div className="bg-primary text-primary-foreground mt-12 flex items-center gap-2 rounded-xl p-3 shadow-lg md:absolute md:bottom-12 md:right-16 md:mt-0">
-            <span className="size-3 shrink-0 p-2 rounded-full bg-accent"></span>
-            <span className="text-lg font-semibold">Dodanie už do 7 dní</span>
           </div>
         </div>
       </div>

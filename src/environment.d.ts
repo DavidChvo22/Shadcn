@@ -5,6 +5,14 @@ declare global {
       DATABASE_URI: string
       NEXT_PUBLIC_SERVER_URL: string
       VERCEL_PROJECT_PRODUCTION_URL: string
+      MAIL_HOST?: string
+      MAIL_PORT?: string
+      MAIL_SECURE?: string
+      MAIL_USER?: string
+      MAIL_PASSWORD?: string
+      MAIL_FROM?: string
+      MAIL_ENCRYPTION?: string
+      ADMIN_EMAIL?: string
     }
   }
 }

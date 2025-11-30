@@ -29,6 +29,13 @@ import { OptionsBlock } from '@/blocks/OptionsBlock/config'
 import { CTABlock } from '@/blocks/CTABlock/config'
 import { ReferenceBlock } from '@/blocks/ReferenceBlock/config'
 import { ConfiguratorBlock } from '@/blocks/ConfiguratorBlock/config'
+import { StepsGrid } from '@/blocks/StepsGrid/config'
+import { ExplainBlock } from '@/blocks/ExplainBlock/config'
+import { CompareBlock } from '@/blocks/CompareBlock/config'
+import { TimelineBlock } from '@/blocks/TimelineBlock/config'
+import { GalleryBlock } from '@/blocks/GalleryBlock/config'
+import { FeatureCardsBlock } from '@/blocks/FeatureCardsBlock/config'
+import { ProcessBlock } from '@/blocks/ProcessBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -68,6 +75,7 @@ export const Pages: CollectionConfig<'pages'> = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       type: 'tabs',
@@ -96,8 +104,16 @@ export const Pages: CollectionConfig<'pages'> = {
                 CTABlock,
                 ReferenceBlock,
                 ConfiguratorBlock,
+                StepsGrid,
+                ExplainBlock,
+                CompareBlock,
+                TimelineBlock,
+                GalleryBlock,
+                FeatureCardsBlock,
+                ProcessBlock,
               ],
               required: true,
+              localized: true,
               admin: {
                 initCollapsed: true,
               },

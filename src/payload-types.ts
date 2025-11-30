@@ -116,7 +116,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: null;
+  locale: 'sk' | 'en';
   user: User & {
     collection: 'users';
   };
@@ -157,7 +157,7 @@ export interface Page {
   id: string;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero' | 'hero223';
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'customHero' | 'hero223' | 'hero243' | 'hero34';
     title?: {
       root: {
         type: string;
@@ -176,6 +176,21 @@ export interface Page {
     description?: string | null;
     buttonText?: string | null;
     buttonLink?: string | null;
+    richText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     links?:
       | {
           link: {
@@ -201,6 +216,13 @@ export interface Page {
         }[]
       | null;
     media?: (string | null) | Media;
+    badge?: string | null;
+    hero34Title?: string | null;
+    hero34Description?: string | null;
+    primaryButtonText?: string | null;
+    primaryButtonLink?: string | null;
+    secondaryButtonText?: string | null;
+    secondaryButtonLink?: string | null;
   };
   layout: (
     | CallToActionBlock
@@ -217,6 +239,13 @@ export interface Page {
     | CTABlock
     | ReferenceBlock
     | ConfiguratorBlock
+    | StepsGrid
+    | ExplainBlock
+    | CompareBlock
+    | TimelineBlock
+    | GalleryBlock
+    | FeatureCardsBlock
+    | ProcessBlock
   )[];
   meta?: {
     title?: string | null;
@@ -843,6 +872,7 @@ export interface FlowBlock {
  * via the `definition` "FaqBlock".
  */
 export interface FaqBlock {
+  variant?: ('blue' | 'white') | null;
   faqs?:
     | {
         question: string;
@@ -863,7 +893,6 @@ export interface ContactBlock {
   description: string;
   phone: string;
   email: string;
-  web: string;
   id?: string | null;
   blockName?: string | null;
   blockType: 'contactBlock';
@@ -920,6 +949,14 @@ export interface ReferenceBlock {
  * via the `definition` "ConfiguratorBlock".
  */
 export interface ConfiguratorBlock {
+  /**
+   * Used to format prices (e.g., EUR, USD, HUF)
+   */
+  currency?: string | null;
+  /**
+   * If you store prices in cents, set this to 2 so the UI divides by 100 when displaying.
+   */
+  priceScale?: number | null;
   categories?:
     | {
         name: string;
@@ -930,17 +967,18 @@ export interface ConfiguratorBlock {
               pages?:
                 | {
                     name: string;
+                    /**
+                     * Určuje, do ktorej skupiny stránka patrí
+                     */
+                    group: 'stranky' | 'layout' | 'extra' | 'pages';
                     default?: boolean | null;
                     price?: number | null;
                     blocks?:
                       | {
-                          blockName:
-                            | 'CTABlock'
-                            | 'FlowBlock'
-                            | 'FaqBlock'
-                            | 'ReferenceBlock'
-                            | 'OptionsBlock'
-                            | 'ContactBlock';
+                          /**
+                           * Enter the name of the block (e.g., CTABlock, FlowBlock, FaqBlock, etc.)
+                           */
+                          blockName: string;
                           default?: boolean | null;
                           price?: number | null;
                           id?: string | null;
@@ -958,6 +996,147 @@ export interface ConfiguratorBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'configuratorBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsGrid".
+ */
+export interface StepsGrid {
+  title: string;
+  subtitle?: string | null;
+  variant?: ('blue' | 'white') | null;
+  steps: {
+    number?: number | null;
+    title: string;
+    description?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stepsGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExplainBlock".
+ */
+export interface ExplainBlock {
+  /**
+   * Small uppercase text above the title
+   */
+  badge?: string | null;
+  title: string;
+  description?: string | null;
+  items: {
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'explainBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CompareBlock".
+ */
+export interface CompareBlock {
+  leftColumnTitle: string;
+  leftColumnItems: {
+    text: string;
+    id?: string | null;
+  }[];
+  rightColumnTitle: string;
+  rightColumnItems: {
+    text: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'compareBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  /**
+   * Main title text (e.g., "Unlock for your existing workflows")
+   */
+  title: string;
+  /**
+   * Text to highlight in the title (e.g., "AI")
+   */
+  highlightedText?: string | null;
+  /**
+   * Text before highlighted text (e.g., "Unlock")
+   */
+  titleBeforeHighlight?: string | null;
+  description?: string | null;
+  items: {
+    icon: 'cloud' | 'xcircle' | 'users' | 'sparkles' | 'zap' | 'check' | 'star' | 'heart' | 'settings' | 'rocket';
+    title: string;
+    description: string;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timelineBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock".
+ */
+export interface GalleryBlock {
+  title: string;
+  items: {
+    title: string;
+    description?: string | null;
+    label?: string | null;
+    href?: string | null;
+    image: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'galleryBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureCardsBlock".
+ */
+export interface FeatureCardsBlock {
+  cards: {
+    title: string;
+    link?: string | null;
+    background: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureCardsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock".
+ */
+export interface ProcessBlock {
+  title: string;
+  description?: string | null;
+  buttonText?: string | null;
+  buttonLink?: string | null;
+  steps: {
+    /**
+     * Step number (e.g., "01", "02")
+     */
+    step?: string | null;
+    title: string;
+    description: string;
+    image: string | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'processBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1245,6 +1424,7 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         buttonText?: T;
         buttonLink?: T;
+        richText?: T;
         links?:
           | T
           | {
@@ -1261,6 +1441,13 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
             };
         media?: T;
+        badge?: T;
+        hero34Title?: T;
+        hero34Description?: T;
+        primaryButtonText?: T;
+        primaryButtonLink?: T;
+        secondaryButtonText?: T;
+        secondaryButtonLink?: T;
       };
   layout?:
     | T
@@ -1279,6 +1466,13 @@ export interface PagesSelect<T extends boolean = true> {
         ctaBlock?: T | CTABlockSelect<T>;
         referenceBlock?: T | ReferenceBlockSelect<T>;
         configuratorBlock?: T | ConfiguratorBlockSelect<T>;
+        stepsGrid?: T | StepsGridSelect<T>;
+        explainBlock?: T | ExplainBlockSelect<T>;
+        compareBlock?: T | CompareBlockSelect<T>;
+        timelineBlock?: T | TimelineBlockSelect<T>;
+        galleryBlock?: T | GalleryBlockSelect<T>;
+        featureCardsBlock?: T | FeatureCardsBlockSelect<T>;
+        processBlock?: T | ProcessBlockSelect<T>;
       };
   meta?:
     | T
@@ -1421,6 +1615,7 @@ export interface FlowBlockSelect<T extends boolean = true> {
  * via the `definition` "FaqBlock_select".
  */
 export interface FaqBlockSelect<T extends boolean = true> {
+  variant?: T;
   faqs?:
     | T
     | {
@@ -1440,7 +1635,6 @@ export interface ContactBlockSelect<T extends boolean = true> {
   description?: T;
   phone?: T;
   email?: T;
-  web?: T;
   id?: T;
   blockName?: T;
 }
@@ -1497,6 +1691,8 @@ export interface ReferenceBlockSelect<T extends boolean = true> {
  * via the `definition` "ConfiguratorBlock_select".
  */
 export interface ConfiguratorBlockSelect<T extends boolean = true> {
+  currency?: T;
+  priceScale?: T;
   categories?:
     | T
     | {
@@ -1510,6 +1706,7 @@ export interface ConfiguratorBlockSelect<T extends boolean = true> {
                 | T
                 | {
                     name?: T;
+                    group?: T;
                     default?: T;
                     price?: T;
                     blocks?:
@@ -1524,6 +1721,141 @@ export interface ConfiguratorBlockSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsGrid_select".
+ */
+export interface StepsGridSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  variant?: T;
+  steps?:
+    | T
+    | {
+        number?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ExplainBlock_select".
+ */
+export interface ExplainBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CompareBlock_select".
+ */
+export interface CompareBlockSelect<T extends boolean = true> {
+  leftColumnTitle?: T;
+  leftColumnItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  rightColumnTitle?: T;
+  rightColumnItems?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  title?: T;
+  highlightedText?: T;
+  titleBeforeHighlight?: T;
+  description?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock_select".
+ */
+export interface GalleryBlockSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        label?: T;
+        href?: T;
+        image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureCardsBlock_select".
+ */
+export interface FeatureCardsBlockSelect<T extends boolean = true> {
+  cards?:
+    | T
+    | {
+        title?: T;
+        link?: T;
+        background?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProcessBlock_select".
+ */
+export interface ProcessBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  buttonText?: T;
+  buttonLink?: T;
+  steps?:
+    | T
+    | {
+        step?: T;
+        title?: T;
+        description?: T;
+        image?: T;
         id?: T;
       };
   id?: T;

@@ -65,6 +65,20 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
+  localization: {
+    locales: [
+      {
+        label: 'Slovak',
+        code: 'sk',
+      },
+      {
+        label: 'English',
+        code: 'en',
+      },
+    ],
+    defaultLocale: 'sk',
+    fallback: true,
+  },
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

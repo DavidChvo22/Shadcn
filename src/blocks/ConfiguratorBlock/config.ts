@@ -3,35 +3,12 @@ import type { Block, Field } from 'payload'
 const blockFields: Field[] = [
   {
     name: 'blockName',
-    type: 'select',
+    type: 'text',
     required: true,
     label: 'Block Name',
-    options: [
-      {
-        label: 'CTABlock',
-        value: 'CTABlock',
-      },
-      {
-        label: 'FlowBlock',
-        value: 'FlowBlock',
-      },
-      {
-        label: 'FaqBlock',
-        value: 'FaqBlock',
-      },
-      {
-        label: 'ReferenceBlock',
-        value: 'ReferenceBlock',
-      },
-      {
-        label: 'OptionsBlock',
-        value: 'OptionsBlock',
-      },
-      {
-        label: 'ContactBlock',
-        value: 'ContactBlock',
-      },
-    ],
+    admin: {
+      description: 'Enter the name of the block (e.g., CTABlock, FlowBlock, FaqBlock, etc.)',
+    },
   },
   {
     name: 'default',
@@ -56,6 +33,34 @@ const pageFields: Field[] = [
     type: 'text',
     required: true,
     label: 'Page Name',
+  },
+  {
+    name: 'group',
+    type: 'select',
+    required: true,
+    defaultValue: 'stranky',
+    label: 'Group',
+    options: [
+      {
+        label: 'Stránky',
+        value: 'stranky',
+      },
+      {
+        label: 'Layout',
+        value: 'layout',
+      },
+      {
+        label: 'Extra',
+        value: 'extra',
+      },
+      {
+        label: 'Pages (Legacy)',
+        value: 'pages',
+      },
+    ],
+    admin: {
+      description: 'Určuje, do ktorej skupiny stránka patrí',
+    },
   },
   {
     name: 'default',
@@ -132,6 +137,28 @@ export const ConfiguratorBlock: Block = {
     plural: 'Configurator Blocks',
   },
   fields: [
+    {
+      name: 'currency',
+      type: 'text',
+      label: 'Currency (ISO 4217)',
+      defaultValue: 'EUR',
+      admin: {
+        description: 'Used to format prices (e.g., EUR, USD, HUF)',
+      },
+    },
+    {
+      name: 'priceScale',
+      type: 'number',
+      label: 'Price scale (number of decimal places stored as integers)',
+      defaultValue: 0,
+      admin: {
+        description:
+          'If you store prices in cents, set this to 2 so the UI divides by 100 when displaying.',
+        step: 1,
+        min: 0,
+        max: 6,
+      },
+    },
     {
       name: 'categories',
       type: 'array',
