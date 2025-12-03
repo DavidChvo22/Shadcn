@@ -19,18 +19,18 @@ export const Hero34: React.FC<Page['hero']> = ({
   media,
 }) => {
   return (
-    <section className="bg-zinc-950 text-white">
+    <section className="bg-white text-zinc-900">
       <div className="container">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div className="flex flex-col items-center p-16 text-center lg:items-start lg:text-left">
-            {badge && <p className="text-white">{badge}</p>}
+            {badge && <p className="text-sm font-medium text-primary">{badge}</p>}
             {hero34Title && (
-              <h1 className="my-6 text-pretty text-4xl font-bold text-white lg:text-6xl">
+              <h1 className="my-6 text-pretty text-4xl font-bold text-zinc-900 lg:text-6xl">
                 {hero34Title}
               </h1>
             )}
             {hero34Description && (
-              <p className="text-zinc-300 mb-8 max-w-xl lg:text-xl">{hero34Description}</p>
+              <p className="text-zinc-600 mb-8 max-w-xl lg:text-xl">{hero34Description}</p>
             )}
             <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
               {primaryButtonText && primaryButtonLink && (
@@ -43,7 +43,7 @@ export const Hero34: React.FC<Page['hero']> = ({
                 <CMSLink
                   url={secondaryButtonLink}
                   appearance="outline"
-                  className="h-10 border-white text-white hover:bg-white hover:text-zinc-950"
+                  className="h-10 border-zinc-900 text-zinc-900 hover:bg-zinc-900 hover:text-white"
                 >
                   {secondaryButtonText}
                 </CMSLink>

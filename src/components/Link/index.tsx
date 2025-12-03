@@ -44,13 +44,12 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (!href) return null
 
-  const size = appearance === 'link' ? 'clear' : sizeFromProps
   const newTabProps = newTab ? { rel: 'noopener noreferrer', target: '_blank' } : {}
 
   // Handle anchor links (scroll to element on same page)
   const isAnchorLink = href.startsWith('#')
 
-  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     if (isAnchorLink) {
       e.preventDefault()
       const elementId = href.substring(1)
@@ -86,7 +85,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   if (isAnchorLink) {
     return (
-      <Button className={className} size={size} variant={appearance} onClick={handleAnchorClick}>
+      <Button className={className} size={sizeFromProps} variant={appearance} onClick={handleAnchorClick}>
         {label && label}
         {children && children}
       </Button>
@@ -94,7 +93,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button asChild className={className} size={sizeFromProps} variant={appearance}>
       <Link className={cn(className)} href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}

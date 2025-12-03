@@ -20,11 +20,11 @@ const resolveBackground = (background: FeatureCardsBlockProps['cards'][number]['
 }
 
 const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
+  const t = useTranslations('FeatureCardsBlock')
+
   if (!cards || cards.length === 0) {
     return null
   }
-
-  const t = useTranslations('FeatureCardsBlock')
 
   return (
     <section className="py-32">

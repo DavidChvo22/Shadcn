@@ -206,7 +206,7 @@ const ContactBlock = ({
                   className="h-10 w-full hover:scale-105 transition-all duration-200 disabled:opacity-70"
                 >
                   {submissionState === 'loading' ? '...' : t('submit')}
-                </Button>
+              </Button>
                 <div aria-live="polite">
                   {submissionState === 'success' && (
                     <p className="text-sm text-emerald-500">{t('successMessage')}</p>

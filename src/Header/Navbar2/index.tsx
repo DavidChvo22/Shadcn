@@ -109,7 +109,7 @@ const Navbar2 = ({
     <section
       className={cn(
         'sticky top-0 z-50 py-4 transition-colors duration-300',
-        isScrolled ? 'bg-background shadow-md' : 'bg-primary',
+        isScrolled ? 'bg-background shadow-md' : 'bg-transparent shadow-md',
       )}
     >
       <div className="container">
@@ -117,12 +117,7 @@ const Navbar2 = ({
         <nav className="hidden justify-between lg:flex">
           {/* Logo */}
           <a href={logo.url} className="flex items-center gap-2">
-            <span
-              className={cn(
-                'text-3xl font-bold tracking-tight transition-colors',
-                !isScrolled && 'text-background',
-              )}
-            >
+            <span className={cn('text-3xl font-bold tracking-tight transition-colors')}>
               {logo.title}
             </span>
           </a>
@@ -137,11 +132,8 @@ const Navbar2 = ({
           </div>
           <div className="flex gap-2">
             <Button
-              variant={isScrolled ? 'default' : 'secondary'}
-              className={cn(
-                'h-10 rounded-md px-4 hover:scale-105 transition-all duration-200',
-                !isScrolled && 'bg-background text-foreground hover:bg-background/90',
-              )}
+              variant="default"
+              className={cn('h-10 rounded-md px-4 hover:scale-105 transition-all duration-200')}
               onClick={(e) => {
                 e.preventDefault()
                 const href = '/sk/#konfigurator-2'
@@ -163,7 +155,9 @@ const Navbar2 = ({
                     const rawHash = targetUrl.hash.replace('#', '')
                     const hash = decodeHash(rawHash)
                     if (hash) {
-                      document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      document
+                        .getElementById(hash)
+                        ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                     }
                     return
                   }
@@ -245,7 +239,6 @@ const renderMenuItem = (item: MenuItem, isScrolled: boolean) => {
             'bg-transparent text-sm font-medium focus-visible:outline-none transition-colors',
             'hover:bg-accent hover:text-foreground',
             'data-[state=open]:bg-accent data-[state=open]:text-foreground',
-            !isScrolled && 'text-background',
           )}
         >
           {item.title}
@@ -268,7 +261,6 @@ const renderMenuItem = (item: MenuItem, isScrolled: boolean) => {
         className={cn(
           'bg-transparent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
           'hover:bg-accent hover:text-foreground',
-          !isScrolled && 'text-background',
         )}
         onClick={(e) => {
           if (!item.url) return

@@ -31,7 +31,7 @@ const sectionConfig = [
 
 const featureKeys = ['responsive', 'sections', 'support'] as const
 
-const Footer9 = ({ locale }: { locale?: string } = {}) => {
+const Footer9 = ({}: { locale?: string } = {}) => {
   const t = useTranslations('Footer9')
   const sections = sectionConfig.map(({ key, linkKeys }) => ({
     title: t(`sections.${key}.title`),

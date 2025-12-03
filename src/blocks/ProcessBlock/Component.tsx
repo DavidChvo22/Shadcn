@@ -62,44 +62,30 @@ const ProcessBlock: React.FC<ProcessBlockProps> = ({
                 {title}
               </h1>
             )}
-            {description && (
-              <p className="text-foreground/50 text-base">{description}</p>
-            )}
+            {description && <p className="text-foreground/50 text-base">{description}</p>}
             {steps && steps.length > 0 && (
               <div className="h-90 relative overflow-hidden border">
-                {previousActive !== undefined &&
-                 previousActive < steps.length &&
-                 steps[previousActive]?.image &&
-                 getMediaUrl(steps[previousActive].image) && (
-                  <div className="absolute top-0 h-full w-full">
-                    <img
-                      src={getMediaUrl(steps[previousActive].image) || ''}
-                      className="h-full w-full object-cover"
-                      alt={steps[previousActive]?.title || ''}
-                    />
-                  </div>
-                )}
                 {active < steps.length &&
-                 steps[active]?.image &&
-                 getMediaUrl(steps[active].image) && (
-                  <motion.div
-                    initial={{ clipPath: 'inset(100% 100% 0% 0%)' }}
-                    animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
-                    key={active}
-                    transition={{
-                      type: 'spring',
-                      stiffness: 150,
-                      damping: 20,
-                    }}
-                    className="h-full w-full"
-                  >
-                    <img
-                      src={getMediaUrl(steps[active].image) || ''}
-                      className="h-full w-full object-cover"
-                      alt={steps[active]?.title || ''}
-                    />
-                  </motion.div>
-                )}
+                  steps[active]?.image &&
+                  getMediaUrl(steps[active].image) && (
+                    <motion.div
+                      initial={{ clipPath: 'inset(100% 100% 0% 0%)' }}
+                      animate={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+                      key={active}
+                      transition={{
+                        type: 'spring',
+                        stiffness: 150,
+                        damping: 20,
+                      }}
+                      className="h-full w-full"
+                    >
+                      <img
+                        src={getMediaUrl(steps[active].image) || ''}
+                        className="h-full w-full object-cover"
+                        alt={steps[active]?.title || ''}
+                      />
+                    </motion.div>
+                  )}
               </div>
             )}
             {buttonText && buttonLink && (
@@ -113,12 +99,7 @@ const ProcessBlock: React.FC<ProcessBlockProps> = ({
           </div>
           <ul className="lg:pl-22 relative w-full">
             {steps.map((step, index) => (
-              <ProcessCard
-                key={step.id || index}
-                step={step}
-                index={index}
-                setActive={setActive}
-              />
+              <ProcessCard key={step.id || index} step={step} index={index} setActive={setActive} />
             ))}
           </ul>
         </div>
@@ -132,13 +113,7 @@ const ProcessCard = ({
   index,
   setActive,
 }: {
-  step: {
-    step?: string
-    title?: string
-    description?: string
-    image?: string | { url?: string | null } | null
-    id?: string
-  }
+  step: ProcessBlockProps['steps'][number]
   index: number
   setActive: (index: number) => void
 }) => {
@@ -156,26 +131,18 @@ const ProcessCard = ({
   }, [itemInView, index, setActive])
 
   return (
-    <li
-      ref={ref}
-      className="relative flex flex-col justify-between gap-12 border-b py-8 lg:py-16"
-    >
+    <li ref={ref} className="relative flex flex-col justify-between gap-12 border-b py-8 lg:py-16">
       <div className="flex w-fit items-center justify-center px-4 py-1 text-9xl tracking-tighter">
         {step.step || `0${index + 1}`}
       </div>
       <div>
         {step.title && (
-          <h3 className="mb-4 text-2xl font-semibold tracking-tighter lg:text-3xl">
-            {step.title}
-          </h3>
+          <h3 className="mb-4 text-2xl font-semibold tracking-tighter lg:text-3xl">{step.title}</h3>
         )}
-        {step.description && (
-          <p className="text-foreground/50">{step.description}</p>
-        )}
+        {step.description && <p className="text-foreground/50">{step.description}</p>}
       </div>
     </li>
   )
 }
 
 export { ProcessBlock }
-

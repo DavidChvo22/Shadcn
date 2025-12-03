@@ -77,6 +77,29 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
     setSelectedBlocks(new Set()) // Reset selected blocks, useEffect will initialize defaults
   }
 
+  const formatPrice = useCallback(
+    (value: number) => {
+      const resolvedLocale = locale || 'sk-SK'
+      let resolvedCurrency = currency || 'EUR'
+      let formatter: Intl.NumberFormat
+      try {
+        formatter = new Intl.NumberFormat(resolvedLocale, {
+          style: 'currency',
+          currency: resolvedCurrency,
+        })
+      } catch {
+        resolvedCurrency = 'EUR'
+        formatter = new Intl.NumberFormat(resolvedLocale, {
+          style: 'currency',
+          currency: resolvedCurrency,
+        })
+      }
+      const divisor = Math.pow(10, priceScale)
+      return formatter.format((value || 0) / (divisor || 1))
+    },
+    [locale, currency, priceScale],
+  )
+
   if (!categories || !Array.isArray(categories) || categories.length === 0) {
     return (
       <div className="container px-16 py-8">
@@ -119,29 +142,6 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
   }
 
   const totalPrice = calculateTotalPrice()
-
-  const formatPrice = useCallback(
-    (value: number) => {
-      const resolvedLocale = locale || 'sk-SK'
-      let resolvedCurrency = currency || 'EUR'
-      let formatter: Intl.NumberFormat
-      try {
-        formatter = new Intl.NumberFormat(resolvedLocale, {
-          style: 'currency',
-          currency: resolvedCurrency,
-        })
-      } catch {
-        resolvedCurrency = 'EUR'
-        formatter = new Intl.NumberFormat(resolvedLocale, {
-          style: 'currency',
-          currency: resolvedCurrency,
-        })
-      }
-      const divisor = Math.pow(10, priceScale)
-      return formatter.format((value || 0) / (divisor || 1))
-    },
-    [locale, currency, priceScale],
-  )
 
   return (
     <div className="container px-16 py-32">
@@ -219,15 +219,15 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
               }
 
               return (
-            <Card className="rounded-3xl border-2 border-border bg-background shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg font-medium">{t('pagesAndBlocks')}</CardTitle>
-                {selectedSubcategory.description && (
-                  <p className="text-muted-foreground text-sm mt-2">
-                    {selectedSubcategory.description}
-                  </p>
-                )}
-              </CardHeader>
+                <Card className="rounded-3xl border-2 border-border bg-background shadow-sm">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-medium">{t('pagesAndBlocks')}</CardTitle>
+                    {selectedSubcategory.description && (
+                      <p className="text-muted-foreground text-sm mt-2">
+                        {selectedSubcategory.description}
+                      </p>
+                    )}
+                  </CardHeader>
                   <CardContent className="space-y-4">
                     {Object.entries(groupedPages).map(([groupKey, pagesInGroup]) => {
                       const groupTotal = pagesInGroup.reduce((sum, page) => {
@@ -267,94 +267,92 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
                                 </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-4 pb-0">
-                <Accordion
-                  type="multiple"
-                  value={openPages}
-                  onValueChange={setOpenPages}
-                  className="w-full"
-                >
+                                <Accordion
+                                  type="multiple"
+                                  value={openPages}
+                                  onValueChange={setOpenPages}
+                                  className="w-full"
+                                >
                                   {pagesInGroup.map((page) => {
-                      const pageName = page?.name as string
-                      const blockTotal =
-                        page?.blocks?.reduce((sum, block, blockIndex) => {
-                          const blockKey = `${pageName}-${blockIndex}`
-                          if (selectedBlocks.has(blockKey) && block?.price) {
-                            return sum + Number(block.price)
-                          }
-                          return sum
-                        }, 0) ?? 0
+                                    const pageName = page?.name as string
+                                    const blockTotal =
+                                      page?.blocks?.reduce((sum, block, blockIndex) => {
+                                        const blockKey = `${pageName}-${blockIndex}`
+                                        if (selectedBlocks.has(blockKey) && block?.price) {
+                                          return sum + Number(block.price)
+                                        }
+                                        return sum
+                                      }, 0) ?? 0
 
-                      return (
+                                    return (
                                       <AccordionItem
                                         key={pageName}
                                         value={pageName}
                                         className="border-b last:border-0"
                                       >
                                         <AccordionTrigger className="text-base font-medium py-3">
-                            <div className="flex items-center justify-between w-full pr-4">
-                              <span>{pageName}</span>
-                              {blockTotal > 0 && (
-                                <span className="text-muted-foreground text-sm font-normal">
-                                                {t('blocksPrice', {
-                                                  price: formatPrice(blockTotal),
-                                                })}
-                                </span>
-                              )}
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            {page.blocks && page.blocks.length > 0 ? (
+                                          <div className="flex items-center justify-between w-full pr-4">
+                                            <span>{pageName}</span>
+                                            {blockTotal > 0 && (
+                                              <span className="text-muted-foreground text-sm font-normal">
+                                                {formatPrice(blockTotal)}
+                                              </span>
+                                            )}
+                                          </div>
+                                        </AccordionTrigger>
+                                        <AccordionContent>
+                                          {page.blocks && page.blocks.length > 0 ? (
                                             <div className="pt-2 pb-4 space-y-2">
-                                {page.blocks
-                                  .filter((block) => block?.blockName)
-                                  .map((block, blockIndex) => {
-                                    const blockKey = `${pageName}-${blockIndex}`
-                                    const isSelected = selectedBlocks.has(blockKey)
-                                    return (
-                                      <div
-                                        key={blockIndex}
-                                        className="text-muted-foreground flex items-center justify-between text-sm py-1"
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <Checkbox
-                                            checked={isSelected}
-                                            onCheckedChange={() =>
-                                              toggleBlock(pageName, blockIndex)
-                                            }
-                                            id={`block-${blockKey}`}
-                                          />
-                                          <label
-                                            htmlFor={`block-${blockKey}`}
-                                            className="cursor-pointer"
-                                          >
-                                            {block.blockName}
-                                          </label>
-                                        </div>
-                                        {block.price && block.price > 0 && (
+                                              {page.blocks
+                                                .filter((block) => block?.blockName)
+                                                .map((block, blockIndex) => {
+                                                  const blockKey = `${pageName}-${blockIndex}`
+                                                  const isSelected = selectedBlocks.has(blockKey)
+                                                  return (
+                                                    <div
+                                                      key={blockIndex}
+                                                      className="text-muted-foreground flex items-center justify-between text-sm py-1"
+                                                    >
+                                                      <div className="flex items-center gap-2">
+                                                        <Checkbox
+                                                          checked={isSelected}
+                                                          onCheckedChange={() =>
+                                                            toggleBlock(pageName, blockIndex)
+                                                          }
+                                                          id={`block-${blockKey}`}
+                                                        />
+                                                        <label
+                                                          htmlFor={`block-${blockKey}`}
+                                                          className="cursor-pointer"
+                                                        >
+                                                          {block.blockName}
+                                                        </label>
+                                                      </div>
+                                                      {block.price && block.price > 0 && (
                                                         <span>{formatPrice(block.price)}</span>
-                                        )}
-                                      </div>
-                                    )
-                                  })}
-                              </div>
-                            ) : (
+                                                      )}
+                                                    </div>
+                                                  )
+                                                })}
+                                            </div>
+                                          ) : (
                                             <p className="text-muted-foreground text-sm pt-2 pb-4">
                                               {t('noBlocks')}
                                             </p>
-                            )}
-                          </AccordionContent>
-                        </AccordionItem>
-                      )
-                    })}
-                </Accordion>
+                                          )}
+                                        </AccordionContent>
+                                      </AccordionItem>
+                                    )
+                                  })}
+                                </Accordion>
                               </AccordionContent>
                             </AccordionItem>
                           </Accordion>
                         </div>
                       )
                     })}
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
               )
             })()}
         </div>

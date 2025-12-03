@@ -151,12 +151,12 @@ export const ConfiguratorBlock: Block = {
       type: 'number',
       label: 'Price scale (number of decimal places stored as integers)',
       defaultValue: 0,
+      min: 0,
+      max: 6,
       admin: {
         description:
           'If you store prices in cents, set this to 2 so the UI divides by 100 when displaying.',
         step: 1,
-        min: 0,
-        max: 6,
       },
     },
     {

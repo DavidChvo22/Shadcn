@@ -52,7 +52,7 @@ const getPostsSitemap = unstable_cache(
             const isDefault = locale === defaultLocale
             const loc = getLocalizedUrl(post.slug!, locale)
 
-            const alternateLinks = locales.map((altLocale) => ({
+            const alternateLinks: Array<{ hreflang: string; href: string }> = locales.map((altLocale) => ({
               hreflang: altLocale,
               href: getLocalizedUrl(post.slug!, altLocale),
             }))

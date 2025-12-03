@@ -51,7 +51,7 @@ const getPagesSitemap = unstable_cache(
         const isDefault = locale === defaultLocale
         const loc = isDefault ? `${SITE_URL}/${pagePath}` : `${SITE_URL}/${locale}/${pagePath}`
 
-        const alternateLinks = locales.map((altLocale) => ({
+        const alternateLinks: Array<{ hreflang: string; href: string }> = locales.map((altLocale) => ({
           hreflang: altLocale,
           href: altLocale === defaultLocale
             ? `${SITE_URL}/${pagePath}`
@@ -83,7 +83,7 @@ const getPagesSitemap = unstable_cache(
             const isDefault = locale === defaultLocale
             const loc = getLocalizedUrl(page.slug!, locale)
 
-            const alternateLinks = locales.map((altLocale) => ({
+            const alternateLinks: Array<{ hreflang: string; href: string }> = locales.map((altLocale) => ({
               hreflang: altLocale,
               href: getLocalizedUrl(page.slug!, altLocale),
             }))
