@@ -53,7 +53,7 @@ export const Pages: CollectionConfig<'pages'> = {
     slug: true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ['slug', 'updatedAt'],
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({
@@ -68,15 +68,7 @@ export const Pages: CollectionConfig<'pages'> = {
         collection: 'pages',
         req,
       }),
-    useAsTitle: ((data: any) => {
-      if (typeof data?.title === 'string') {
-        return data.title
-      }
-      if (data?.title && typeof data.title === 'object') {
-        return data.title.sk || data.title.en || data.title[Object.keys(data.title)[0]] || 'Untitled'
-      }
-      return data?.slug || 'Untitled'
-    }) as any,
+    useAsTitle: 'title',
   },
   fields: [
     {
