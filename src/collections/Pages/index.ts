@@ -68,7 +68,15 @@ export const Pages: CollectionConfig<'pages'> = {
         collection: 'pages',
         req,
       }),
-    useAsTitle: 'title',
+    useAsTitle: (data) => {
+      if (typeof data?.title === 'string') {
+        return data.title
+      }
+      if (data?.title && typeof data.title === 'object') {
+        return data.title.sk || data.title.en || data.title[Object.keys(data.title)[0]] || 'Untitled'
+      }
+      return data?.slug || 'Untitled'
+    },
   },
   fields: [
     {
