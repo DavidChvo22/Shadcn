@@ -1,4 +1,4 @@
-// storage-adapter-import-placeholder
+import { cloudinaryStoragePlugin } from '@acewebs/payload-plugin-cloudinary'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
 import sharp from 'sharp' // sharp-import
@@ -81,7 +81,18 @@ export default buildConfig({
   },
   plugins: [
     ...plugins,
-    // storage-adapter-placeholder
+    // Cloudinary storage - používa sa len ak sú nastavené Cloudinary env vars
+    ...(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET
+      ? [
+          cloudinaryStoragePlugin({
+            cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+            apiKey: process.env.CLOUDINARY_API_KEY,
+            apiSecret: process.env.CLOUDINARY_API_SECRET,
+            collections: ['media'], // Povinné: kolekcie, na ktoré sa aplikuje Cloudinary
+            rootFolder: process.env.CLOUDINARY_FOLDER || 'media', // Voliteľné: priečinok v Cloudinary
+          }),
+        ]
+      : []),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
