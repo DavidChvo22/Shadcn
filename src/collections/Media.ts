@@ -40,7 +40,8 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // If Cloudinary env vars are set, uses Cloudinary. Otherwise uses local filesystem.
+    // Cloudinary plugin používa cloud storage, takže staticDir nie je potrebný
+    // Ak Cloudinary nie je aktívny, použije sa lokálny filesystem
     ...(process.env.CLOUDINARY_CLOUD_NAME
       ? {}
       : {
