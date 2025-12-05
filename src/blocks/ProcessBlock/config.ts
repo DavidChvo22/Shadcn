@@ -11,7 +11,7 @@ export const ProcessBlock: Block = {
     {
       name: 'title',
       type: 'text',
-      required: true,
+      required: false,
       label: 'Title',
     },
     {

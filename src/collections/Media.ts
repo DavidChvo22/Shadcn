@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { revalidateMedia, revalidateMediaDelete } from './Media/hooks/revalidateMedia'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,6 +40,10 @@ export const Media: CollectionConfig = {
       }),
     },
   ],
+  hooks: {
+    afterChange: [revalidateMedia],
+    afterDelete: [revalidateMediaDelete],
+  },
   upload: {
     // Cloudinary plugin používa cloud storage, takže staticDir nie je potrebný
     // Ak Cloudinary nie je aktívny, použije sa lokálny filesystem

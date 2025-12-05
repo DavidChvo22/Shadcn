@@ -14,6 +14,9 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { locales, type Locale } from '@/i18n/config'
 
+// Revalidate pages every 60 seconds (ISR)
+export const revalidate = 60
+
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
   const pages = await payload.find({

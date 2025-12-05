@@ -342,8 +342,6 @@ export interface Media {
   createdAt: string;
   url?: string | null;
   thumbnailURL?: string | null;
-  cloudinaryUrl?: string | null;
-  cloudinaryPublicId?: string | null;
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;
@@ -1122,7 +1120,7 @@ export interface FeatureCardsBlock {
  * via the `definition` "ProcessBlock".
  */
 export interface ProcessBlock {
-  title: string;
+  title?: string | null;
   description?: string | null;
   buttonText?: string | null;
   buttonLink?: string | null;
