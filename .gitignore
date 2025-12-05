@@ -1,5 +1,5 @@
 build
-dist / media
+dist
 node_modules
 .DS_Store
 .env
@@ -7,7 +7,7 @@ node_modules
 .vercel
 
 # Payload default media upload directory
-public/media/
+# public/media/ - odstránené, aby sa media súbory commitovali do Git
 
 public/robots.txt
 public/sitemap*.xml
