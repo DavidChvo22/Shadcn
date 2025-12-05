@@ -36,7 +36,10 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let src: StaticImageData | string = srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, url, width: fullWidth } = resource
+    const { alt: altFromResource, height: fullHeight, width: fullWidth, url } = resource
+
+    // Cloudinary plugin adds cloudinaryUrl field dynamically
+    const cloudinaryUrl = 'cloudinaryUrl' in resource ? (resource as any).cloudinaryUrl : undefined
 
     width = fullWidth!
     height = fullHeight!
@@ -44,7 +47,9 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
     const cacheTag = resource.updatedAt
 
-    src = getMediaUrl(url, cacheTag)
+    // Prefer Cloudinary URL ak existuje, inak použij normálny URL
+    const mediaUrl = cloudinaryUrl || url
+    src = getMediaUrl(mediaUrl, cacheTag)
   }
 
   const loading = loadingFromProps || (!priority ? 'lazy' : undefined)

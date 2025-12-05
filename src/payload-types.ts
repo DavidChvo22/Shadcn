@@ -342,6 +342,8 @@ export interface Media {
   createdAt: string;
   url?: string | null;
   thumbnailURL?: string | null;
+  cloudinaryUrl?: string | null;
+  cloudinaryPublicId?: string | null;
   filename?: string | null;
   mimeType?: string | null;
   filesize?: number | null;
