@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import React from 'react'
 
 import type { Gallery26Block as Gallery26BlockProps, Media } from '@/payload-types'
@@ -30,7 +31,6 @@ const getAltText = (image: string | Media | null | undefined, alt?: string | nul
   return 'Gallery Image'
 }
 
-
 const Gallery26Block: React.FC<Gallery26BlockProps> = ({ images }) => {
   if (!images || images.length === 0) {
     return null
@@ -44,7 +44,6 @@ const Gallery26Block: React.FC<Gallery26BlockProps> = ({ images }) => {
             const imageSrc = getMediaUrl(imageItem.image)
             const altText = getAltText(imageItem.image, imageItem.alt)
             const colSpan = (imageItem as any).colSpan || '2'
-            const height = (imageItem as any).height || 'h-82'
 
             if (!imageSrc) return null
 
@@ -59,18 +58,22 @@ const Gallery26Block: React.FC<Gallery26BlockProps> = ({ images }) => {
                     : 'col-span-2'
 
             return (
-              <div
+              <motion.div
                 key={imageItem.id || index}
-                className={`${height} ${colSpanClass} rounded-[2.5rem] overflow-hidden`}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${colSpanClass} rounded-[2.5rem] overflow-hidden`}
               >
                 <img
                   width={200}
                   height={200}
-                  className="size-full rounded-[2.5rem] object-cover"
+                  className="w-full h-auto rounded-[2.5rem] object-contain"
                   src={imageSrc}
                   alt={altText}
                 />
-              </div>
+              </motion.div>
             )
           })}
         </div>

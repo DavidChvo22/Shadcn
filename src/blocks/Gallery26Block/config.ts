@@ -21,17 +21,6 @@ const galleryImageFields = [
     ],
   },
   {
-    name: 'height',
-    type: 'select',
-    required: true,
-    label: 'Height',
-    defaultValue: 'h-82',
-    options: [
-      { label: 'Medium (h-82)', value: 'h-82' },
-      { label: 'Large (h-100)', value: 'h-100' },
-    ],
-  },
-  {
     name: 'alt',
     type: 'text',
     label: 'Alt Text',

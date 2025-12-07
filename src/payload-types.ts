@@ -1190,7 +1190,6 @@ export interface Gallery26Block {
     | {
         image: string | Media;
         colSpan: '2' | '3' | '5';
-        height: 'h-82' | 'h-100';
         alt?: string | null;
         id?: string | null;
       }[]
@@ -1974,7 +1973,6 @@ export interface Gallery26BlockSelect<T extends boolean = true> {
     | {
         image?: T;
         colSpan?: T;
-        height?: T;
         alt?: T;
         id?: T;
       };
