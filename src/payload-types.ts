@@ -247,6 +247,7 @@ export interface Page {
     | FeatureCardsBlock
     | ProcessBlock
     | Gallery25Block
+    | Gallery26Block
   )[];
   meta?: {
     title?: string | null;
@@ -1182,6 +1183,24 @@ export interface Gallery25Block {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Gallery26Block".
+ */
+export interface Gallery26Block {
+  images?:
+    | {
+        image: string | Media;
+        colSpan: '2' | '3' | '5';
+        height: 'h-82' | 'h-100';
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gallery26Block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1516,6 +1535,7 @@ export interface PagesSelect<T extends boolean = true> {
         featureCardsBlock?: T | FeatureCardsBlockSelect<T>;
         processBlock?: T | ProcessBlockSelect<T>;
         gallery25Block?: T | Gallery25BlockSelect<T>;
+        gallery26Block?: T | Gallery26BlockSelect<T>;
       };
   meta?:
     | T
@@ -1938,6 +1958,23 @@ export interface Gallery25BlockSelect<T extends boolean = true> {
     | {
         image?: T;
         width?: T;
+        alt?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Gallery26Block_select".
+ */
+export interface Gallery26BlockSelect<T extends boolean = true> {
+  images?:
+    | T
+    | {
+        image?: T;
+        colSpan?: T;
+        height?: T;
         alt?: T;
         id?: T;
       };
