@@ -246,6 +246,7 @@ export interface Page {
     | GalleryBlock
     | FeatureCardsBlock
     | ProcessBlock
+    | Gallery25Block
   )[];
   meta?: {
     title?: string | null;
@@ -1140,6 +1141,47 @@ export interface ProcessBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Gallery25Block".
+ */
+export interface Gallery25Block {
+  row1?:
+    | {
+        image: string | Media;
+        width: '20vh' | '30vh';
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  row2?:
+    | {
+        image: string | Media;
+        width: '20vh' | '30vh';
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  row3?:
+    | {
+        image: string | Media;
+        width: '20vh' | '30vh';
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  row4?:
+    | {
+        image: string | Media;
+        width: '20vh' | '30vh';
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gallery25Block';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1473,6 +1515,7 @@ export interface PagesSelect<T extends boolean = true> {
         galleryBlock?: T | GalleryBlockSelect<T>;
         featureCardsBlock?: T | FeatureCardsBlockSelect<T>;
         processBlock?: T | ProcessBlockSelect<T>;
+        gallery25Block?: T | Gallery25BlockSelect<T>;
       };
   meta?:
     | T
@@ -1856,6 +1899,46 @@ export interface ProcessBlockSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Gallery25Block_select".
+ */
+export interface Gallery25BlockSelect<T extends boolean = true> {
+  row1?:
+    | T
+    | {
+        image?: T;
+        width?: T;
+        alt?: T;
+        id?: T;
+      };
+  row2?:
+    | T
+    | {
+        image?: T;
+        width?: T;
+        alt?: T;
+        id?: T;
+      };
+  row3?:
+    | T
+    | {
+        image?: T;
+        width?: T;
+        alt?: T;
+        id?: T;
+      };
+  row4?:
+    | T
+    | {
+        image?: T;
+        width?: T;
+        alt?: T;
         id?: T;
       };
   id?: T;

@@ -33,13 +33,13 @@ const FaqBlock = async (props: FaqBlockComponentProps) => {
         <Accordion type="multiple">
           {faqs?.map((faq, index) => (
             <Fragment key={index}>
-            <AccordionItem
-              value={`item-${index}`}
+              <AccordionItem
+                value={`item-${index}`}
                 className={cn(
                   'mb-2 rounded-md border-b-0',
                   isBlue ? 'bg-background/10 border-background/20' : 'bg-background border-border',
                 )}
-            >
+              >
                 <AccordionTrigger
                   className={cn(
                     'mb-0 bg-transparent pb-0 text-left md:text-lg hover:no-underline',
@@ -48,17 +48,17 @@ const FaqBlock = async (props: FaqBlockComponentProps) => {
                       : 'text-foreground [&>svg]:text-foreground',
                   )}
                 >
-                {faq.question}
-              </AccordionTrigger>
+                  {faq.question}
+                </AccordionTrigger>
                 <AccordionContent
                   className={cn(
                     'bg-transparent pt-4 pb-0 text-sm',
                     isBlue ? 'text-primary-foreground/80' : 'text-foreground',
                   )}
                 >
-                {faq.answer}
-              </AccordionContent>
-            </AccordionItem>
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
               <div className={cn('h-px w-full', isBlue ? 'bg-white/30' : 'bg-border')} />
             </Fragment>
           ))}

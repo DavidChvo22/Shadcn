@@ -1,16 +1,38 @@
-import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
+import type {
+  CollectionAfterChangeHook,
+  CollectionAfterDeleteHook,
+  CollectionBeforeChangeHook,
+} from 'payload'
 
 import { revalidatePath } from 'next/cache'
 
 import type { Media } from '../../../payload-types'
 
+// Note: Focal point is used via CSS object-position in components
+// Image sizes regeneration after focal point change is a known issue in Payload CMS
+// See: https://github.com/payloadcms/payload/issues/12234
+// The focal point values (focalX, focalY) are used directly in CSS, so imageSizes regeneration
+// is not critical for the visual display
+
 // Revalidate all pages when media is updated
 // This ensures that pages using the media will show the updated image
 export const revalidateMedia: CollectionAfterChangeHook<Media> = async ({
   doc,
+  previousDoc,
   req: { payload, context },
 }) => {
   if (!context.disableRevalidate) {
+    // Check if focal point changed
+    const focalPointChanged =
+      previousDoc &&
+      (previousDoc.focalX !== doc.focalX || previousDoc.focalY !== doc.focalY)
+
+    if (focalPointChanged) {
+      payload.logger.info(
+        `Focal point changed for media ${doc.id}, image sizes should be regenerated`,
+      )
+    }
+
     // Find all pages that use this media
     const pages = await payload.find({
       collection: 'pages',
@@ -87,4 +109,6 @@ export const revalidateMediaDelete: CollectionAfterDeleteHook<Media> = async ({
 
   return doc
 }
+
+
 

@@ -68,7 +68,7 @@ const CTABlock: React.FC<CTABlockProps> = ({ title, description, buttonText, but
             {isAnchorLink ? (
               <Button
                 variant="secondary"
-                className="h-10 bg-background text-foreground hover:bg-background/90 hover:scale-105 transition-all duration-200"
+                className="h-10 bg-background text-primary hover:bg-background/90 hover:scale-105 transition-all duration-200"
                 onClick={handleAnchorClick}
               >
                 {buttonText}
@@ -77,7 +77,7 @@ const CTABlock: React.FC<CTABlockProps> = ({ title, description, buttonText, but
               <Button
                 asChild
                 variant="secondary"
-                className="h-10 bg-background text-foreground hover:bg-background/90 hover:scale-105 transition-all duration-200"
+                className="h-10 bg-background text-primary hover:bg-background/90 hover:scale-105 transition-all duration-200"
               >
                 <Link href={buttonLink}>{buttonText}</Link>
               </Button>

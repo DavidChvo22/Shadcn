@@ -10,12 +10,12 @@ const ExplainBlock: React.FC<ExplainBlockProps> = ({ badge, title, description, 
   }
 
   return (
-    <section className="bg-zinc-950 text-white mb-16 lg:mb-24">
+    <section className="bg-zinc-900 text-white mb-16 lg:mb-24">
       <div className="container m-x-auto flex flex-col gap-20 pt-16 pb-32 lg:flex-row">
-        <div className="w-full max-w-[400px] rounded-3xl px-6 pb-6 lg:px-12 lg:pb-12">
+        <div className="w-full max-w-[500px] rounded-3xl px-6 pb-6 lg:px-12 lg:pb-12">
           {title && (
-            <div className="bg-white text-zinc-900 mb-8 rounded-3xl p-6">
-              <h2 className="text-3xl font-extrabold">{title}</h2>
+            <div className=" text-white mb-8 rounded-3xl p-6">
+              <h2 className="text-5xl font-semibold">{title}</h2>
             </div>
           )}
           {badge && <span className="text-zinc-300 text-sm uppercase">{badge}</span>}

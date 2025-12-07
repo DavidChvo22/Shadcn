@@ -6,6 +6,7 @@ import React from 'react'
 
 import { Button } from '@/components/ui/button'
 import { SCROLL_TARGET_STORAGE_KEY } from '@/components/ScrollToAnchor'
+import { Link } from '@/i18n/navigation'
 const sectionConfig = [
   {
     key: 'services',
@@ -194,7 +195,7 @@ const Footer9 = ({}: { locale?: string } = {}) => {
             ))}
           </div>
           <div className="text-zinc-400 mt-20 flex flex-col items-start justify-between gap-4 border-t border-zinc-700 pt-8 text-center text-sm font-medium lg:flex-row lg:items-right">
-            <ul className="flex items-end justify-end gap-4 lg:ml-auto">
+            <ul className="flex items-center justify-end gap-4 lg:ml-auto">
               {metaLinks.map((metaLink, idx) => (
                 <li key={idx}>
                   <a
@@ -206,23 +207,15 @@ const Footer9 = ({}: { locale?: string } = {}) => {
                   </a>
                 </li>
               ))}
-              <li>
-                <p className="text-white">{t('followUs')}</p>
-              </li>
-              <li>
-                <Button className="h-10 gap-2 hover:scale-105 transition-all duration-200">
-                  <Linkedin className="h-4 w-4" />
-                  {t('linkedin')}
-                </Button>
-              </li>
-              <li>
-                <Button
-                  className="h-10 gap-2 hover:scale-105 transition-all duration-200"
-                  variant="outline"
+              <li className="flex items-center gap-2">
+                <span className="text-white">{t('followUs')}</span>
+                <Link
+                  href="https://www.linkedin.com"
+                  target="_blank"
+                  className="flex items-center h-10 gap-2 hover:scale-105 transition-all duration-200"
                 >
-                  <LifeBuoy className="h-4 w-4" />
-                  {t('productHunt')}
-                </Button>
+                  <Linkedin className="h-4 w-4" />
+                </Link>
               </li>
             </ul>
           </div>

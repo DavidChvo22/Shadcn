@@ -108,8 +108,10 @@ const Navbar2 = ({
   return (
     <section
       className={cn(
-        'sticky top-0 z-50 py-4 transition-colors duration-300',
-        isScrolled ? 'bg-background shadow-md' : 'bg-transparent shadow-md',
+        'sticky top-0 z-50 py-4 transition-colors duration-300 border-b',
+        isScrolled
+          ? 'bg-background border-b-[rgb(0, 0, 0.3)]'
+          : 'bg-transparent  border-transparent',
       )}
     >
       <div className="container">

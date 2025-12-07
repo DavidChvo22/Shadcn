@@ -16,6 +16,7 @@ import { TimelineBlock } from '@/blocks/TimelineBlock/Component'
 import { GalleryBlock } from '@/blocks/GalleryBlock/Component'
 import { FeatureCardsBlock } from '@/blocks/FeatureCardsBlock/Component'
 import { ProcessBlock } from '@/blocks/ProcessBlock/Component'
+import { Gallery25Block } from '@/blocks/Gallery25Block/Component'
 
 const blockComponents = {
   /* archive: ArchiveBlock,
@@ -39,6 +40,7 @@ const blockComponents = {
   galleryBlock: GalleryBlock,
   featureCardsBlock: FeatureCardsBlock,
   processBlock: ProcessBlock,
+  gallery25Block: Gallery25Block,
 } as const
 
 type BlockType = keyof typeof blockComponents
@@ -70,6 +72,7 @@ const blockTypeToReadable = (blockType: string): string => {
     galleryBlock: 'galeria',
     featureCardsBlock: 'feature-karty',
     processBlock: 'proces',
+    gallery25Block: 'galeria-25',
   }
   return (
     typeMap[blockType] ||

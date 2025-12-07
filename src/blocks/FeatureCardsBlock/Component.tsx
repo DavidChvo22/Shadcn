@@ -39,18 +39,18 @@ const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
           {cards.map((card, index) => {
             const backgroundUrl = resolveBackground(card.background)
             const handleSelect = (e?: React.MouseEvent) => {
-              if (!backgroundUrl) return
+              // Only open link if it exists, don't open image
+              if (!card.link) return
               if (e) {
                 e.preventDefault()
                 e.stopPropagation()
               }
-              window.open(backgroundUrl, '_blank', 'noopener,noreferrer')
+              window.open(card.link, '_blank', 'noopener,noreferrer')
             }
             const content = (
               <div
-                className="relative z-20 flex size-full items-end"
+                className="relative z-20 flex size-full items-end pointer-events-none"
                 aria-label={card.title || undefined}
-                onClick={backgroundUrl ? handleSelect : undefined}
               >
                 <span className="text-2xl font-semibold leading-tight text-white md:text-3xl">
                   {card.title}
@@ -61,43 +61,20 @@ const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
             const elementKey = card.id || `${card.title}-${index}`
             const commonProps = {
               style: backgroundUrl ? { backgroundImage: `url(${backgroundUrl})` } : undefined,
-              className:
-                "min-h-auto relative w-full overflow-hidden rounded-xl bg-black/40 bg-cover bg-center bg-no-repeat p-5 shadow-xl transition-all duration-300 before:absolute before:left-0 before:top-0 before:z-10 before:block before:size-full before:bg-black/20 before:transition-all before:duration-300 before:content-[''] hover:before:bg-black/10 sm:aspect-square md:aspect-auto md:min-h-[30rem] md:max-w-[30rem]",
-            }
-
-            if (card.link) {
-              return (
-                <div
-                  key={elementKey}
-                  {...commonProps}
-                  onClick={backgroundUrl ? handleSelect : undefined}
-                  role={backgroundUrl ? 'button' : undefined}
-                  tabIndex={backgroundUrl ? 0 : undefined}
-                  onKeyDown={
-                    backgroundUrl
-                      ? (e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault()
-                            handleSelect()
-                          }
-                        }
-                      : undefined
-                  }
-                >
-                  {content}
-                </div>
-              )
+              className: `min-h-auto relative w-full overflow-hidden rounded-xl bg-black/40 bg-cover bg-center bg-no-repeat p-5 shadow-xl transition-all duration-300 before:absolute before:left-0 before:top-0 before:z-10 before:block before:size-full before:bg-black/20 before:transition-all before:duration-300 before:content-[''] hover:before:bg-black/10 sm:aspect-square md:aspect-auto md:min-h-[30rem] md:max-w-[30rem] ${
+                card.link ? 'cursor-pointer' : ''
+              }`,
             }
 
             return (
               <div
                 key={elementKey}
                 {...commonProps}
-                onClick={backgroundUrl ? handleSelect : undefined}
-                role={backgroundUrl ? 'button' : undefined}
-                tabIndex={backgroundUrl ? 0 : undefined}
+                onClick={card.link ? handleSelect : undefined}
+                role={card.link ? 'button' : undefined}
+                tabIndex={card.link ? 0 : undefined}
                 onKeyDown={
-                  backgroundUrl
+                  card.link
                     ? (e) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           e.preventDefault()

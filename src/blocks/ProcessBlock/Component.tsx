@@ -55,8 +55,8 @@ const ProcessBlock: React.FC<ProcessBlockProps> = ({
   return (
     <section className="py-32">
       <div className="container">
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-20">
-          <div className="top-10 h-fit w-fit gap-3 space-y-7 py-8 lg:sticky">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-20 lg:items-start">
+          <div className="lg:sticky lg:top-[20vh] lg:self-start h-fit w-fit gap-3 space-y-7 py-8">
             {title && (
               <h1 className="relative w-fit text-5xl font-semibold tracking-tight lg:text-7xl">
                 {title}

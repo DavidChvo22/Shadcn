@@ -16,14 +16,18 @@ const getMediaUrl = (image: GalleryBlockProps['items'][number]['image']) => {
   if (typeof image === 'string') return image
   if (typeof image === 'object') {
     const media = image as Media
-    return (
-      media.url ||
-      media?.sizes?.large?.url ||
-      media?.sizes?.medium?.url ||
-      media?.sizes?.small?.url ||
-      media?.sizes?.thumbnail?.url ||
-      undefined
-    )
+    // Prioritize original URL for full screenshots
+    return media.url || undefined
+  }
+  return undefined
+}
+
+const getFocalPoint = (image: GalleryBlockProps['items'][number]['image']): string | undefined => {
+  if (!image || typeof image !== 'object') return undefined
+  const media = image as Media
+  // Payload CMS stores focal point as focalX and focalY (numbers 0-100)
+  if (typeof media.focalX === 'number' && typeof media.focalY === 'number') {
+    return `${media.focalX}% ${media.focalY}%`
   }
   return undefined
 }
@@ -100,6 +104,7 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ title, items }) => {
           <CarouselContent className="ml-[20px] mr-[20px] 2xl:ml-[calc(50vw-700px+20px)] 2xl:mr-[calc(50vw-700px+20px)]">
             {items.map((item) => {
               const imageSrc = getMediaUrl(item.image)
+              const focalPoint = getFocalPoint(item.image)
               return (
                 <CarouselItem
                   key={item.id || item.title}
@@ -118,12 +123,17 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ title, items }) => {
                     <div>
                       <div className="aspect-3/2 flex overflow-clip rounded-xl">
                         <div className="flex-1">
-                          <div className="relative h-full w-full origin-bottom transition duration-300 group-hover:scale-105">
+                          <div className="relative h-full w-full origin-bottom transition duration-300 group-hover:scale-105 overflow-hidden">
                             {imageSrc ? (
                               <img
                                 src={imageSrc}
                                 alt={item.title || ''}
-                                className="h-full w-full object-cover object-center"
+                                className="w-full object-cover"
+                                style={{
+                                  objectPosition: focalPoint || 'top',
+                                  height: '100%',
+                                  minHeight: '100%',
+                                }}
                               />
                             ) : (
                               <div className="h-full w-full bg-primary-foreground/20" />

@@ -35,8 +35,10 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let alt = altFromProps
   let src: StaticImageData | string = srcFromProps || ''
 
+  let objectPosition: string | undefined
+
   if (!src && resource && typeof resource === 'object') {
-    const { alt: altFromResource, height: fullHeight, width: fullWidth, url } = resource
+    const { alt: altFromResource, height: fullHeight, width: fullWidth, url, focalX, focalY } = resource
 
     // Cloudinary plugin adds cloudinaryUrl field dynamically
     const cloudinaryUrl = 'cloudinaryUrl' in resource ? (resource as any).cloudinaryUrl : undefined
@@ -44,6 +46,11 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     width = fullWidth!
     height = fullHeight!
     alt = altFromResource || ''
+
+    // Use focal point if available (focalX and focalY are numbers 0-100)
+    if (typeof focalX === 'number' && typeof focalY === 'number') {
+      objectPosition = `${focalX}% ${focalY}%`
+    }
 
     const cacheTag = resource.updatedAt
 
@@ -76,6 +83,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
+        style={objectPosition ? { objectPosition } : undefined}
       />
     </picture>
   )

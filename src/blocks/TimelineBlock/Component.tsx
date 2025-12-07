@@ -74,7 +74,7 @@ const TimelineBlock: React.FC<TimelineBlockProps> = ({
               return (
                 <div
                   key={item.id || index}
-                  className="bg-zinc-700 text-white relative my-12 overflow-hidden rounded-2xl px-8 py-16 shadow-none sm:px-12 sm:py-24 lg:px-16 lg:py-32"
+                  className="bg-zinc-900 text-white relative my-12 overflow-hidden rounded-2xl px-8 py-16 shadow-none sm:px-12 sm:py-24 lg:px-16 lg:py-32"
                 >
                   <div className="gap-4 sm:gap-6">
                     <div className="block shrink-0">

@@ -25,6 +25,13 @@ const mailTransporter =
           pass: process.env.MAIL_PASSWORD,
         },
         ...(process.env.MAIL_ENCRYPTION === 'tls' ? { requireTLS: true } : {}),
+        connectionTimeout: 10000, // 10 seconds
+        greetingTimeout: 10000, // 10 seconds
+        socketTimeout: 10000, // 10 seconds
+        // Retry configuration
+        pool: true,
+        maxConnections: 1,
+        maxMessages: 3,
       })
     : null
 
@@ -95,7 +102,15 @@ Táto správa bola odoslaná cez kontaktný formulár na vašej webovej stránke
       priority: 'normal',
     }
 
-    const result = await mailTransporter.sendMail(mailOptions)
+    // Add timeout wrapper for sendMail
+    const sendMailPromise = mailTransporter.sendMail(mailOptions)
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Email sending timeout after 15 seconds')), 15000)
+    })
+
+    const result = (await Promise.race([sendMailPromise, timeoutPromise])) as Awaited<
+      ReturnType<typeof mailTransporter.sendMail>
+    >
 
     return NextResponse.json({ success: true, messageId: result.messageId })
   } catch (error) {
@@ -104,9 +119,18 @@ Táto správa bola odoslaná cez kontaktný formulár na vašej webovej stránke
     const errorDetails = error instanceof Error ? error.stack : String(error)
     console.error('Error details:', errorDetails)
 
+    // Check if it's a connection/timeout error
+    const isConnectionError =
+      errorMessage.includes('timeout') ||
+      errorMessage.includes('ETIMEDOUT') ||
+      errorMessage.includes('ECONNREFUSED') ||
+      errorMessage.includes('ENOTFOUND')
+
     return NextResponse.json(
       {
-        error: 'Unable to send message',
+        error: isConnectionError
+          ? 'Unable to connect to email server. Please try again later or contact support.'
+          : 'Unable to send message',
         details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
       },
       { status: 500 },

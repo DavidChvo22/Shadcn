@@ -50,13 +50,16 @@ const Hero243 = () => {
 
   return (
     <section className="h-full w-screen overflow-hidden pb-32">
-      <div className="container border-b border-t border-dashed">
-        <div className="relative flex w-full max-w-5xl flex-col justify-start border border-t-0 border-dashed px-5 py-12 md:items-center md:justify-center lg:mx-auto">
+      <div className="container">
+        <div className="relative flex w-full max-w-5xl flex-col justify-start px-5 py-12 md:items-center md:justify-center lg:mx-auto">
           <p className="text-muted-foreground flex items-center gap-3 text-sm" data-aos="fade-down">
             <span className="inline-block size-2 rounded bg-green-500" />
             {t('badge')}
           </p>
-          <div className="mb-7 mt-3 w-full max-w-xl text-center text-5xl font-semibold tracking-tighter md:mb-10 md:text-6xl lg:mb-0 lg:text-7xl" data-aos="fade-up">
+          <div
+            className="mb-7 mt-3 w-full max-w-xl text-center text-5xl font-semibold tracking-tighter md:mb-10 md:text-6xl lg:mb-0 lg:text-7xl"
+            data-aos="fade-up"
+          >
             <h1 className="relative z-10">{t('heading')}</h1>
             <ContainerTextFlip
               unstyled
@@ -65,12 +68,17 @@ const Hero243 = () => {
             />
           </div>
         </div>
-        <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center border border-b-0 border-t-0 border-dashed py-20">
-          <div className="w-full max-w-2xl space-y-5 md:text-center" data-aos="fade-up" data-aos-delay="200">
+        <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center py-20">
+          <div
+            className="w-full max-w-2xl space-y-5 md:text-center"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
             <p className="text-muted-foreground px-5 lg:text-lg">{t('description')}</p>
             <Button
               asChild
-              className="mx-5 h-10 hover:scale-105 transition-all duration-200 rounded-3xl"
+              variant="default"
+              className="mx-5 h-10 hover:scale-105 transition-all duration-200 "
             >
               <Link href="/sk#konfigurator-2" onClick={handleConfiguratorClick}>
                 {t('cta')}
@@ -78,20 +86,20 @@ const Hero243 = () => {
             </Button>
           </div>
         </div>
-        <ul className="md:h-34 mx-auto grid h-44 w-full max-w-5xl grid-cols-1 border border-b-0 border-dashed md:grid-cols-2 lg:h-24 lg:grid-cols-3">
+        <ul className="md:h-34 mx-auto grid h-44 w-full max-w-5xl grid-cols-1 md:grid-cols-2 lg:h-24 lg:grid-cols-3">
           <li className="flex h-full items-center justify-between gap-10 px-5 md:gap-3 lg:justify-center">
             <div className="bg-muted flex size-12 items-center justify-center rounded-lg">
               <Zap className="text-muted-foreground size-6" />
             </div>
             <p className="text-muted-foreground text-lg">{t('stats.fastDelivery')}</p>
           </li>
-          <li className="flex h-full items-center justify-between gap-10 border-l border-t border-dashed px-5 md:gap-3 lg:justify-center lg:border-t-0">
+          <li className="flex h-full items-center justify-between gap-10 px-5 md:gap-3 lg:justify-center">
             <div className="bg-muted flex size-12 items-center justify-center rounded-lg">
               <Users className="text-muted-foreground size-6" />
             </div>
             <p className="text-muted-foreground text-lg">{t('stats.team')}</p>
           </li>
-          <li className="col-span-1 flex h-full items-center justify-between gap-10 border-l border-t border-dashed px-5 md:col-span-2 md:justify-center md:gap-3 lg:col-span-1 lg:border-t-0">
+          <li className="col-span-1 flex h-full items-center justify-between gap-10 px-5 md:col-span-2 md:justify-center md:gap-3 lg:col-span-1">
             <div className="bg-muted flex size-12 items-center justify-center rounded-lg">
               <TrendingUp className="text-muted-foreground size-6" />
             </div>

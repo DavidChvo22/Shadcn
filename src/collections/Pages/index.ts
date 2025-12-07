@@ -36,6 +36,7 @@ import { TimelineBlock } from '@/blocks/TimelineBlock/config'
 import { GalleryBlock } from '@/blocks/GalleryBlock/config'
 import { FeatureCardsBlock } from '@/blocks/FeatureCardsBlock/config'
 import { ProcessBlock } from '@/blocks/ProcessBlock/config'
+import { Gallery25Block } from '@/blocks/Gallery25Block/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -111,6 +112,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 GalleryBlock,
                 FeatureCardsBlock,
                 ProcessBlock,
+                Gallery25Block,
               ],
               required: true,
               localized: true,
