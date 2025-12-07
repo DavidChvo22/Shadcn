@@ -19,7 +19,7 @@ export const Hero34: React.FC<Page['hero']> = ({
   media,
 }) => {
   return (
-    <section className="bg-white text-zinc-900">
+    <section className="bg-white text-zinc-900 relative pb-[60px] md:pb-20 lg:pb-[100px]">
       <div className="container">
         <div className="grid items-center gap-8 lg:grid-cols-2">
           <div className="flex flex-col items-center p-16 text-center lg:items-start lg:text-left">
@@ -59,6 +59,15 @@ export const Hero34: React.FC<Page['hero']> = ({
           )}
         </div>
       </div>
+      {/* Diagonal divider at the bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 w-full pointer-events-none h-[60px] md:h-20 lg:h-[100px]"
+        style={{
+          background: 'linear-gradient(135deg, #5B9FE3 0%, #4A8FD3 100%)',
+          clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 50%)',
+          boxShadow: '0 10px 40px rgba(91, 159, 227, 0.3)',
+        }}
+      />
     </section>
   )
 }

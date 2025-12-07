@@ -143,6 +143,37 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
 
   const totalPrice = calculateTotalPrice()
 
+  // Calculate prices by group
+  const calculateGroupPrices = () => {
+    if (!selectedSubcategory?.pages) return {}
+    const groupPrices: Record<string, number> = {}
+
+    selectedSubcategory.pages.forEach((page) => {
+      const group = page?.group || 'stranky'
+      if (!groupPrices[group]) {
+        groupPrices[group] = 0
+      }
+
+      if (page.blocks) {
+        page.blocks.forEach((block, blockIndex) => {
+          const blockKey = `${page.name}-${blockIndex}`
+          if (selectedBlocks.has(blockKey) && block?.price) {
+            groupPrices[group] += block.price
+          }
+        })
+      }
+    })
+
+    return groupPrices
+  }
+
+  const groupPrices = calculateGroupPrices()
+  const groupLabels: Record<string, string> = {
+    stranky: t('groups.stranky'),
+    layout: t('groups.layout'),
+    extra: t('groups.extra'),
+  }
+
   return (
     <div className="container px-16 py-32">
       <h1 className="mb-8 text-4xl font-semibold">{t('heading')}</h1>
@@ -378,6 +409,63 @@ const ConfiguratorBlock: React.FC<ConfiguratorBlockProps> = (props) => {
                   ? t('selectedConfiguration', { name: selectedSubcategory.name })
                   : t('selectCategoryToSeePrice')}
               </p>
+
+              {/* Price breakdown by groups */}
+              {selectedSubcategory && totalPrice > 0 && (
+                <div className="mt-6 space-y-2">
+                  <Accordion type="single" collapsible className="w-full">
+                    {Object.entries(groupPrices)
+                      .filter(([_, price]) => price > 0)
+                      .map(([groupKey, price]) => (
+                        <AccordionItem
+                          key={groupKey}
+                          value={groupKey}
+                          className="border-b border-border"
+                        >
+                          <AccordionTrigger className="py-2 text-sm hover:no-underline">
+                            <div className="flex items-center justify-between w-full pr-4">
+                              <span className="text-muted-foreground">
+                                {groupLabels[groupKey] || groupKey}
+                              </span>
+                              <span className="text-foreground font-medium">
+                                {formatPrice(price)}
+                              </span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="pt-2 pb-4">
+                            <div className="space-y-2">
+                              {selectedSubcategory.pages
+                                ?.filter((page) => (page?.group || 'stranky') === groupKey)
+                                .map((page) => {
+                                  const pageName = page?.name as string
+                                  const pageTotal =
+                                    page?.blocks?.reduce((sum, block, blockIndex) => {
+                                      const blockKey = `${pageName}-${blockIndex}`
+                                      if (selectedBlocks.has(blockKey) && block?.price) {
+                                        return sum + Number(block.price)
+                                      }
+                                      return sum
+                                    }, 0) ?? 0
+
+                                  if (pageTotal === 0) return null
+
+                                  return (
+                                    <div
+                                      key={pageName}
+                                      className="flex items-center justify-between text-xs text-muted-foreground"
+                                    >
+                                      <span>{pageName}</span>
+                                      <span>{formatPrice(pageTotal)}</span>
+                                    </div>
+                                  )
+                                })}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                  </Accordion>
+                </div>
+              )}
 
               <Button
                 className="h-10 mt-6 w-full hover:scale-105 transition-all duration-200"
