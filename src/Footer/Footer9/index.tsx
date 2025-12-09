@@ -7,6 +7,7 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { SCROLL_TARGET_STORAGE_KEY } from '@/components/ScrollToAnchor'
 import { Link } from '@/i18n/navigation'
+import { useRouter } from 'next/navigation'
 const sectionConfig = [
   {
     key: 'services',
@@ -34,6 +35,7 @@ const featureKeys = ['responsive', 'sections', 'support'] as const
 
 const Footer9 = ({}: { locale?: string } = {}) => {
   const t = useTranslations('Footer9')
+  const router = useRouter()
   const sections = sectionConfig.map(({ key, linkKeys }) => ({
     title: t(`sections.${key}.title`),
     links: linkKeys.map((linkItem) => ({
@@ -58,8 +60,8 @@ const Footer9 = ({}: { locale?: string } = {}) => {
     // Handle links with anchor that might be on different page
     if (href.includes('#')) {
       try {
-        const targetUrl = new URL(href, window.location.origin)
-        const currentUrl = new URL(window.location.href)
+        const targetUrl = new URL(href, typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
+        const currentUrl = new URL(typeof window !== 'undefined' ? window.location.href : 'http://localhost')
         const normalize = (path: string) => path.replace(/\/+$/, '') || '/'
         const decodeHash = (hash: string) => {
           if (!hash) return ''
@@ -85,15 +87,20 @@ const Footer9 = ({}: { locale?: string } = {}) => {
           e.preventDefault()
           const rawHash = targetUrl.hash.replace('#', '')
           const hash = decodeHash(rawHash)
-          if (hash) {
+          if (hash && typeof window !== 'undefined') {
             window.sessionStorage.setItem(SCROLL_TARGET_STORAGE_KEY, hash)
           }
-          const nextPath = `${targetUrl.pathname}${targetUrl.search}`
-          window.location.assign(nextPath)
+          const nextPath = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
+          router.push(nextPath)
         }
       } catch {
         // If URL parsing fails, let default navigation handle it
+        router.push(href)
       }
+    } else {
+      // Regular link without anchor
+      e.preventDefault()
+      router.push(href)
     }
   }
 
@@ -118,8 +125,8 @@ const Footer9 = ({}: { locale?: string } = {}) => {
                     e.preventDefault()
                     const href = '/sk/#konfigurator-2'
                     try {
-                      const targetUrl = new URL(href, window.location.origin)
-                      const currentUrl = new URL(window.location.href)
+                      const targetUrl = new URL(href, typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
+                      const currentUrl = new URL(typeof window !== 'undefined' ? window.location.href : 'http://localhost')
                       const normalize = (path: string) => path.replace(/\/+$/, '') || '/'
                       const decodeHash = (hash: string) => {
                         if (!hash) return ''
@@ -144,14 +151,14 @@ const Footer9 = ({}: { locale?: string } = {}) => {
                       // Different page - navigate and then scroll after page loads
                       const rawHash = targetUrl.hash.replace('#', '')
                       const hash = decodeHash(rawHash)
-                      if (hash) {
+                      if (hash && typeof window !== 'undefined') {
                         window.sessionStorage.setItem(SCROLL_TARGET_STORAGE_KEY, hash)
                       }
-                      const nextPath = `${targetUrl.pathname}${targetUrl.search}`
-                      window.location.assign(nextPath)
+                      const nextPath = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
+                      router.push(nextPath)
                     } catch {
                       // If URL parsing fails, fallback to simple navigation
-                      window.location.href = href
+                      router.push(href)
                     }
                   }}
                 >
@@ -183,13 +190,44 @@ const Footer9 = ({}: { locale?: string } = {}) => {
               <div key={sectionIdx}>
                 <h3 className="mb-4 font-bold text-white">{section.title}</h3>
                 <ul className="text-zinc-400 space-y-4">
-                  {section.links.map((link, linkIdx) => (
-                    <li key={linkIdx} className="hover:text-primary font-medium">
-                      <a href={link.href} onClick={(e) => handleLinkClick(e, link.href)}>
-                        {link.name}
-                      </a>
-                    </li>
-                  ))}
+                  {section.links.map((link, linkIdx) => {
+                    const isExternal = link.href.startsWith('http://') || link.href.startsWith('https://') || link.href.startsWith('//')
+                    const isAnchor = link.href.startsWith('#')
+
+                    if (isExternal) {
+                      return (
+                        <li key={linkIdx} className="hover:text-primary font-medium">
+                          <a href={link.href} target="_blank" rel="noopener noreferrer">
+                            {link.name}
+                          </a>
+                        </li>
+                      )
+                    }
+
+                    if (isAnchor) {
+                      return (
+                        <li key={linkIdx} className="hover:text-primary font-medium">
+                          <a href={link.href} onClick={(e) => {
+                            e.preventDefault()
+                            const targetId = link.href.slice(1)
+                            if (targetId) {
+                              document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                            }
+                          }}>
+                            {link.name}
+                          </a>
+                        </li>
+                      )
+                    }
+
+                    return (
+                      <li key={linkIdx} className="hover:text-primary font-medium">
+                        <Link href={link.href}>
+                          {link.name}
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             ))}

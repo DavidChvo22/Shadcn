@@ -7,10 +7,12 @@ import React from 'react'
 import { ContainerTextFlip } from '@/components/aceternity/container-text-flip'
 import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
+import { useRouter } from 'next/navigation'
 import { SCROLL_TARGET_STORAGE_KEY } from '@/components/ScrollToAnchor'
 
 const Hero243 = () => {
   const t = useTranslations('Hero243')
+  const router = useRouter()
   const flipWords = (t.raw('flipWords') as string[]) ?? []
 
   const handleConfiguratorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -18,8 +20,8 @@ const Hero243 = () => {
     e.preventDefault()
 
     try {
-      const targetUrl = new URL(href, window.location.origin)
-      const currentUrl = new URL(window.location.href)
+      const targetUrl = new URL(href, typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
+      const currentUrl = new URL(typeof window !== 'undefined' ? window.location.href : 'http://localhost')
       const normalize = (path: string) => path.replace(/\/+$/, '') || '/'
       const decodeHash = (hash: string) => {
         if (!hash) return ''
@@ -39,12 +41,12 @@ const Hero243 = () => {
         return
       }
 
-      if (hash) {
+      if (hash && typeof window !== 'undefined') {
         window.sessionStorage.setItem(SCROLL_TARGET_STORAGE_KEY, hash)
       }
-      window.location.assign(`${targetUrl.pathname}${targetUrl.search}`)
+      router.push(`${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`)
     } catch {
-      window.location.href = href
+      router.push(href)
     }
   }
 

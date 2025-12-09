@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react'
 
 import { cn } from '@/utilities/ui'
 import { useTranslations } from 'next-intl'
+import { Link, useRouter } from '@/i18n/navigation'
 
 import {
   Accordion,
@@ -54,6 +55,7 @@ const Navbar2 = ({
   auth,
 }: Navbar2Props) => {
   const t = useTranslations('Navbar2')
+  const router = useRouter()
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -140,8 +142,8 @@ const Navbar2 = ({
                 e.preventDefault()
                 const href = '/sk/#konfigurator-2'
                 try {
-                  const targetUrl = new URL(href, window.location.origin)
-                  const currentUrl = new URL(window.location.href)
+                  const targetUrl = new URL(href, typeof window !== 'undefined' ? window.location.origin : 'http://localhost')
+                  const currentUrl = new URL(typeof window !== 'undefined' ? window.location.href : 'http://localhost')
                   const normalize = (path: string) => path.replace(/\/+$/, '') || '/'
                   const decodeHash = (hash: string) => {
                     if (!hash) return ''
@@ -166,14 +168,14 @@ const Navbar2 = ({
                   // Different page - navigate and then scroll after page loads
                   const rawHash = targetUrl.hash.replace('#', '')
                   const hash = decodeHash(rawHash)
-                  if (hash) {
+                  if (hash && typeof window !== 'undefined') {
                     window.sessionStorage.setItem(SCROLL_TARGET_STORAGE_KEY, hash)
                   }
-                  const nextPath = `${targetUrl.pathname}${targetUrl.search}`
-                  window.location.assign(nextPath)
+                  const nextPath = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`
+                  router.push(nextPath)
                 } catch {
                   // If URL parsing fails, fallback to simple navigation
-                  window.location.href = href
+                  router.push(href)
                 }
               }}
             >
@@ -256,18 +258,17 @@ const renderMenuItem = (item: MenuItem, isScrolled: boolean) => {
     )
   }
 
-  return (
-    <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className={cn(
-          'bg-transparent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
-          'hover:bg-accent hover:text-foreground',
-        )}
-        onClick={(e) => {
-          if (!item.url) return
-
-          if (item.url.startsWith('#')) {
+  // Handle anchor links
+  if (item.url.startsWith('#')) {
+    return (
+      <NavigationMenuItem key={item.title}>
+        <NavigationMenuLink
+          href={item.url}
+          className={cn(
+            'bg-transparent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-accent hover:text-foreground',
+          )}
+          onClick={(e) => {
             e.preventDefault()
             const targetId = item.url.slice(1)
             if (targetId) {
@@ -275,50 +276,46 @@ const renderMenuItem = (item: MenuItem, isScrolled: boolean) => {
                 .getElementById(targetId)
                 ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }
-            return
-          }
+          }}
+        >
+          {item.title}
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+    )
+  }
 
-          if (item.url.includes('#')) {
-            try {
-              const targetUrl = new URL(item.url, window.location.origin)
-              const currentUrl = new URL(window.location.href)
-              const normalize = (path: string) => path.replace(/\/+$/, '') || '/'
-              const decodeHash = (hash: string) => {
-                if (!hash) return ''
-                try {
-                  return decodeURIComponent(hash)
-                } catch {
-                  return hash
-                }
-              }
+  // Handle links with anchors
+  if (item.url.includes('#')) {
+    return (
+      <NavigationMenuItem key={item.title}>
+        <NavigationMenuLink
+          asChild
+          className={cn(
+            'bg-transparent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+            'hover:bg-accent hover:text-foreground',
+          )}
+        >
+          <Link href={item.url}>
+            {item.title}
+          </Link>
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+    )
+  }
 
-              if (normalize(targetUrl.pathname) === normalize(currentUrl.pathname)) {
-                e.preventDefault()
-                const rawHash = targetUrl.hash.replace('#', '')
-                const hash = decodeHash(rawHash)
-                if (hash) {
-                  document
-                    .getElementById(hash)
-                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }
-                return
-              }
-
-              const rawHash = targetUrl.hash.replace('#', '')
-              const hash = decodeHash(rawHash)
-              if (hash) {
-                e.preventDefault()
-                window.sessionStorage.setItem(SCROLL_TARGET_STORAGE_KEY, hash)
-                const nextPath = `${targetUrl.pathname}${targetUrl.search}`
-                window.location.assign(nextPath)
-              }
-            } catch {
-              // ignore parsing errors, fallback to default navigation
-            }
-          }
-        }}
+  // Regular internal links - use Link component
+  return (
+    <NavigationMenuItem key={item.title}>
+      <NavigationMenuLink
+        asChild
+        className={cn(
+          'bg-transparent group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors',
+          'hover:bg-accent hover:text-foreground',
+        )}
       >
-        {item.title}
+        <Link href={item.url}>
+          {item.title}
+        </Link>
       </NavigationMenuLink>
     </NavigationMenuItem>
   )
@@ -340,19 +337,50 @@ const renderMobileMenuItem = (item: MenuItem) => {
     )
   }
 
+  const isExternal = item.url.startsWith('http://') || item.url.startsWith('https://') || item.url.startsWith('//')
+  const isAnchor = item.url.startsWith('#')
+
+  if (isExternal) {
+    return (
+      <a key={item.title} href={item.url} target="_blank" rel="noopener noreferrer" className="text-md font-semibold">
+        {item.title}
+      </a>
+    )
+  }
+
+  if (isAnchor) {
+    return (
+      <a
+        key={item.title}
+        href={item.url}
+        className="text-md font-semibold"
+        onClick={(e) => {
+          e.preventDefault()
+          const targetId = item.url.slice(1)
+          if (targetId) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }}
+      >
+        {item.title}
+      </a>
+    )
+  }
+
   return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
+    <Link key={item.title} href={item.url} className="text-md font-semibold">
       {item.title}
-    </a>
+    </Link>
   )
 }
 
 const SubMenuLink = ({ item }: { item: MenuItem }) => {
-  return (
-    <a
-      className="hover:bg-muted hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
-      href={item.url}
-    >
+  const isExternal = item.url.startsWith('http://') || item.url.startsWith('https://') || item.url.startsWith('//')
+  const isAnchor = item.url.startsWith('#')
+
+  const className = "hover:bg-muted hover:text-accent-foreground flex select-none flex-row gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors"
+  const content = (
+    <>
       <div className="text-muted-foreground">{item.icon}</div>
       <div>
         <div className="text-sm font-semibold">{item.title}</div>
@@ -360,7 +388,47 @@ const SubMenuLink = ({ item }: { item: MenuItem }) => {
           <p className="text-muted-foreground text-sm leading-snug">{item.description}</p>
         )}
       </div>
-    </a>
+    </>
+  )
+
+  if (isExternal) {
+    return (
+      <a
+        className={className}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {content}
+      </a>
+    )
+  }
+
+  if (isAnchor) {
+    return (
+      <a
+        className={className}
+        href={item.url}
+        onClick={(e) => {
+          e.preventDefault()
+          const targetId = item.url.slice(1)
+          if (targetId) {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }}
+      >
+        {content}
+      </a>
+    )
+  }
+
+  return (
+    <Link
+      href={item.url}
+      className={className}
+    >
+      {content}
+    </Link>
   )
 }
 

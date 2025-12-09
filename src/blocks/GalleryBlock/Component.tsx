@@ -6,6 +6,7 @@ import type { CarouselApi } from '@/components/ui/carousel'
 import type { GalleryBlock as GalleryBlockProps, Media } from '@/payload-types'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -34,9 +35,14 @@ const getFocalPoint = (image: GalleryBlockProps['items'][number]['image']): stri
 
 const GalleryBlock: React.FC<GalleryBlockProps> = ({ title, items }) => {
   const t = useTranslations('GalleryBlock')
+  const router = useRouter()
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
+
+  const isExternalLink = (url: string) => {
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')
+  }
 
   useEffect(() => {
     if (!carouselApi) {
@@ -113,10 +119,16 @@ const GalleryBlock: React.FC<GalleryBlockProps> = ({ title, items }) => {
                   <div
                     className="bg-primary text-primary-foreground group flex cursor-pointer flex-col justify-between rounded-xl p-6"
                     onClick={() => {
-                      if (imageSrc) {
+                      if (item.href) {
+                        // Use Next.js router for internal links, window.open for external
+                        if (isExternalLink(item.href)) {
+                          window.open(item.href, '_blank', 'noopener,noreferrer')
+                        } else {
+                          router.push(item.href)
+                        }
+                      } else if (imageSrc) {
+                        // Images are always external
                         window.open(imageSrc, '_blank', 'noopener,noreferrer')
-                      } else if (item.href) {
-                        window.open(item.href, '_blank', 'noopener,noreferrer')
                       }
                     }}
                   >

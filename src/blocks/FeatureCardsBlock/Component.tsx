@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 import type { FeatureCardsBlock as FeatureCardsBlockProps, Media } from '@/payload-types'
 
@@ -26,6 +27,10 @@ const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
     return null
   }
 
+  const isExternalLink = (url: string) => {
+    return url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//')
+  }
+
   return (
     <section className="py-32">
       <div className="container">
@@ -38,15 +43,6 @@ const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((card, index) => {
             const backgroundUrl = resolveBackground(card.background)
-            const handleSelect = (e?: React.MouseEvent) => {
-              // Only open link if it exists, don't open image
-              if (!card.link) return
-              if (e) {
-                e.preventDefault()
-                e.stopPropagation()
-              }
-              window.open(card.link, '_blank', 'noopener,noreferrer')
-            }
             const content = (
               <div
                 className="relative z-20 flex size-full items-end pointer-events-none"
@@ -61,31 +57,40 @@ const FeatureCardsBlock: React.FC<FeatureCardsBlockProps> = ({ cards }) => {
             const elementKey = card.id || `${card.title}-${index}`
             const commonProps = {
               style: backgroundUrl ? { backgroundImage: `url(${backgroundUrl})` } : undefined,
-              className: `min-h-auto relative w-full overflow-hidden rounded-xl bg-black/40 bg-cover bg-center bg-no-repeat p-5 shadow-xl transition-all duration-300 before:absolute before:left-0 before:top-0 before:z-10 before:block before:size-full before:bg-black/20 before:transition-all before:duration-300 before:content-[''] hover:before:bg-black/10 sm:aspect-square md:aspect-auto md:min-h-[30rem] md:max-w-[30rem] ${
+              className: `min-h-auto relative w-full overflow-hidden rounded-xl bg-black/60 bg-cover bg-center bg-no-repeat p-5 shadow-xl transition-all duration-300 before:absolute before:left-0 before:top-0 before:z-10 before:block before:size-full before:bg-black/50 before:transition-all before:duration-300 before:content-[''] hover:before:bg-black/40 sm:aspect-square md:aspect-auto md:min-h-[30rem] md:max-w-[30rem] ${
                 card.link ? 'cursor-pointer' : ''
               }`,
             }
 
+            // If no link, render as div
+            if (!card.link) {
+              return (
+                <div key={elementKey} {...commonProps}>
+                  {content}
+                </div>
+              )
+            }
+
+            // External links - use anchor tag
+            if (isExternalLink(card.link)) {
+              return (
+                <a
+                  key={elementKey}
+                  href={card.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  {...commonProps}
+                >
+                  {content}
+                </a>
+              )
+            }
+
+            // Internal links - use Next.js Link
             return (
-              <div
-                key={elementKey}
-                {...commonProps}
-                onClick={card.link ? handleSelect : undefined}
-                role={card.link ? 'button' : undefined}
-                tabIndex={card.link ? 0 : undefined}
-                onKeyDown={
-                  card.link
-                    ? (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          handleSelect()
-                        }
-                      }
-                    : undefined
-                }
-              >
+              <Link key={elementKey} href={card.link} {...commonProps}>
                 {content}
-              </div>
+              </Link>
             )
           })}
         </div>
